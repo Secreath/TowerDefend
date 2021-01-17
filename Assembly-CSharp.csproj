@@ -58,12 +58,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BaseBullet.cs" />
+     <Compile Include="Assets\Scripts\BaseProperty.cs" />
+     <Compile Include="Assets\Scripts\CharacterUiMgr.cs" />
      <Compile Include="Assets\Scripts\Construction\BaseCons.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
+     <Compile Include="Assets\Scripts\Item\Stone.cs" />
      <Compile Include="Assets\Scripts\Other\Curve.cs" />
      <Compile Include="Assets\Scripts\Other\Tools.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\AudioManager.cs" />
+     <Compile Include="Assets\Scripts\ProjectBase\Base\AutoPush.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\Base\BaseManager.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\Base\PoolMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\DataMgr.cs" />
@@ -76,6 +84,8 @@
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\BasePenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\LoginPenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\UIMgr.cs" />
+     <Compile Include="Assets\Scripts\SomeEnum.cs" />
+     <Compile Include="Assets\Scripts\SomeInterface.cs" />
      <Compile Include="Assets\Scripts\Teammate.cs" />
  <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
  <HintPath>/Users/jihao/UnityProject/TowerDefend/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>

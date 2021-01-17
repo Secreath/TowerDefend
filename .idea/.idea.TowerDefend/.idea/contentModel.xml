@@ -7,8 +7,19 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
+          <e p="BaseBullet.cs" t="Include" />
+          <e p="BaseProperty.cs" t="Include" />
+          <e p="CharacterUiMgr.cs" t="Include" />
           <e p="Construction" t="Include">
             <e p="BaseCons.cs" t="Include" />
+          </e>
+          <e p="Enemy" t="Include">
+            <e p="BaseEnemy.cs" t="Include" />
+            <e p="BaseEnemyAnimStateMgr.cs" t="Include" />
+            <e p="Witch.cs" t="Include" />
+          </e>
+          <e p="Item" t="Include">
+            <e p="Stone.cs" t="Include" />
           </e>
           <e p="Other" t="Include">
             <e p="Curve.cs" t="Include" />
@@ -21,6 +32,7 @@
           <e p="ProjectBase" t="Include">
             <e p="AudioManager.cs" t="Include" />
             <e p="Base" t="Include">
+              <e p="AutoPush.cs" t="Include" />
               <e p="BaseManager.cs" t="Include" />
               <e p="PoolMgr.cs" t="Include" />
             </e>
@@ -47,6 +59,8 @@
               <e p="UIMgr.cs" t="Include" />
             </e>
           </e>
+          <e p="SomeEnum.cs" t="Include" />
+          <e p="SomeInterface.cs" t="Include" />
           <e p="Teammate.cs" t="Include" />
         </e>
       </e>

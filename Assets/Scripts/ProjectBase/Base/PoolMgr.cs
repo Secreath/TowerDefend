@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 //缓存池模块
@@ -7,68 +9,66 @@ using UnityEngine.Events;
 //GameObject和Resource两个公共类中的API
 public class PoolData
 {
-    public bool isDynamic;
     public GameObject fatherObj;
-    public List<GameObject> poolList;
+    public Stack<GameObject> pool;
+    public GameObject childObj;
+    private string Path;
+    public int AllNum;
+    public int OutPoolNum
+    {
+        get { return AllNum - pool.Count; }
+    }
+    public int InPoolNum
+    {
+        get { return pool.Count; }
+    }
     //对象,父对象,是否动态
-    public PoolData(bool isDynamic, GameObject obj, GameObject poolObj)
+    public PoolData(string path,GameObject obj, Transform poolParent)
     {
         //将父节点设为obj
-        this.isDynamic = isDynamic;
+        Path = path;
+        childObj = obj;
         fatherObj = new GameObject(obj.name);
-        fatherObj.transform.parent = poolObj.transform;
-        poolList = new List<GameObject>() { obj };
-        PushObj(obj);
+        fatherObj.transform.parent = poolParent;
+        pool = new Stack<GameObject>();
     }
     //进栈
     public void PushObj(GameObject obj)
     {
         obj.SetActive(false);
-        if (isDynamic)
-        {
-            poolList.Add(obj);
-        }      
         obj.transform.parent = fatherObj.transform;
+        obj.transform.position = fatherObj.transform.position;
+        pool.Push(obj);
     }
     //出栈
-    public GameObject GetObj()
+    public GameObject PopObj()
     {
-        GameObject obj = null;
-        obj = poolList[0];
-        poolList.RemoveAt(0);
-        if (!isDynamic)                         //静态池直接放入列表末端
-            poolList.Add(obj);
-        obj.SetActive(true);
-        obj.transform.parent = null;
-        return obj;
-    }
-    public void InitStaticPool(int Count)
-    {
-        if (!isDynamic && poolList[0]!=null)
-        {            
-            for (int i = 1; i < Count; i++)
-            {                
-                
-                poolList.Add(MonoMgr.GetInstance().CopyGameObject(poolList[0],fatherObj.transform));
-            }
-            Debug.Log(Count);
+        GameObject obj;
+        if (pool.Count < 1)
+        {
+            AllNum++;
+            obj = MonoMgr.GetInstance().CopyGameObject(childObj);
         }
         else
         {
-            Debug.Log("创建失败");
+            obj = pool.Pop();
         }
+        
+        obj.transform.parent = null;
+        obj.SetActive(true);
+        return obj;
     }
     public void Clear()
     {
-        poolList.Clear();
+        AllNum = 0;
+        pool.Clear();
     }
 }
 public class PoolMgr : MonoBehaviour
 {
     static PoolMgr instance;
 
-    public Dictionary<string, PoolData> dynamicPoolDic = new Dictionary<string, PoolData>();        //动态池
-    public Dictionary<string, PoolData> staticPoolDic = new Dictionary<string, PoolData>();             //静态池
+    public Dictionary<string, PoolData> PoolDic = new Dictionary<string, PoolData>();        //动态池
     
     //private GameObject poolObj = new GameObject("pool");
 
@@ -78,7 +78,7 @@ public class PoolMgr : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-        DontDestroyOnLoad(gameObject);
+//        DontDestroyOnLoad(gameObject);
     }
 
     public static PoolMgr GetInstance()
@@ -86,56 +86,33 @@ public class PoolMgr : MonoBehaviour
         return instance;
     }
 
+    private void Start()
+    {
+        InitAPool("FireBall","Bullet/FireBall");
+    }
+
+    public void InitAPool(string name, string path)
+    {
+        ResMgr.GetInstance().LoadAsync<GameObject>(path, (obj) =>
+        {
+            obj.name = name;
+            obj.SetActive(false);
+            PoolDic.Add(name, new PoolData(path,obj, transform));
+        }); 
+    }
     //手动创建一个对象池 名字  长度 和 obj
-    public void InitStaticPool(GameObject obj,int length)
+    public GameObject PopObj(string name, UnityAction<GameObject> callBack = null)
     {
-        if (!staticPoolDic.ContainsKey(obj.name) && !dynamicPoolDic.ContainsKey(obj.name))
+        if (!PoolDic.ContainsKey(name))
         {
-            
-            staticPoolDic.Add(obj.name, new PoolData(false, obj, gameObject));
-            staticPoolDic[obj.name].InitStaticPool(length);
+            throw  new NullReferenceException("Not Init This Pool");
         }
-        else
-            Debug.Log("已经创建过该池");
-    }
 
-    public void GetSObj(string name, UnityAction<GameObject> callBack)
-    {
-        if (dynamicPoolDic.ContainsKey(name))
-        {
-            Debug.Log("该对象属于动态池");
-            return;
-        }
-        if (staticPoolDic.ContainsKey(name) && staticPoolDic[name].poolList.Count > 0)
-        {
-            callBack(staticPoolDic[name].GetObj());
-        }
-        else
-        {
-            Debug.Log("该静态池中没有目标");
-        }
-    }
-
-    public void GetDObj(string name,string path, UnityAction<GameObject> callBack)
-    {
-        if (staticPoolDic.ContainsKey(name))
-        {
-            Debug.Log("该对象属于静态池");
-            return;
-        }
-        if (dynamicPoolDic.ContainsKey(name) && dynamicPoolDic[name].poolList.Count > 0)
-        {
-            callBack(dynamicPoolDic[name].GetObj());        
-        }
-        else
-        {
-            //通过异步加载资源 如果池中没有
-            ResMgr.GetInstance().LoadAsync<GameObject>(path, (o) =>
-            {
-                o.name = name;
-                callBack(o);
-            });   
-        }  
+        GameObject popObj = PoolDic[name].PopObj();
+        
+        if(callBack != null)
+            callBack(popObj);
+        return popObj;
     }
     //放入
     public void PushObj(GameObject obj,UnityAction<GameObject> action = null)
@@ -146,25 +123,16 @@ public class PoolMgr : MonoBehaviour
         //}
         if (action != null)
             action(obj);
-        obj.transform.position = gameObject.transform.position; 
-        obj.transform.parent = gameObject.transform;
         //在这里移除组件
         
-
-        //obj.SetActive(false);
+        if (!PoolDic.ContainsKey(obj.name))
+        {
+            throw  new NullReferenceException("Not Init This Pool");
+        }
         //有抽屉
-        if (dynamicPoolDic.ContainsKey(obj.name))
+        if (PoolDic.ContainsKey(obj.name))
         {
-            dynamicPoolDic[obj.name].PushObj(obj);
-        }
-        else if (staticPoolDic.ContainsKey(obj.name))
-        {
-            staticPoolDic[obj.name].PushObj(obj);
-        }
-        //无抽屉
-        else
-        {
-            dynamicPoolDic.Add(obj.name, new PoolData(true,obj, gameObject));
+            PoolDic[obj.name].PushObj(obj);
         }
     }
 
@@ -173,7 +141,6 @@ public class PoolMgr : MonoBehaviour
     //清空缓存池方法
     public void Clear()
     {
-        dynamicPoolDic.Clear();
-        staticPoolDic.Clear();
+        PoolDic.Clear();
     }
 }

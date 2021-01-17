@@ -7,19 +7,6 @@ using UnityEngine.InputSystem.Interactions;
 
 namespace Player
 {
-    public enum PlayerState
-    {
-        Idle,
-        Walk
-    }
-
-    public enum FaceDir
-    {
-        Up,
-        Down,
-        Right,
-        Left
-    }
     public class PlayerStateMgr : MonoBehaviour
     {
         public static PlayerStateMgr Instance;

@@ -165,6 +165,7 @@ namespace UnityEngine.Rendering
             for (int actionIndex = 0; actionIndex < m_DebugActions.Length; ++actionIndex)
             {
                 UpdateAction(actionIndex);
+//                SampleAction(actionIndex);
             }
         }
 
