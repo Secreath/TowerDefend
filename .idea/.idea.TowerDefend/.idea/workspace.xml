@@ -43,21 +43,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Witch.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
-              <caret line="62" column="100" selection-start-line="62" selection-start-column="100" selection-end-line="62" selection-end-column="100" />
+            <state relative-caret-position="1014">
+              <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
               <folding>
-                <marker date="1610888079122" expanded="true" signature="6:105" ph="..." />
-                <marker date="1610888079122" expanded="true" signature="137:2151" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="197:402" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="246:313" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="354:396" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="419:647" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="666:734" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="740:1172" ph="/* private void OnDrawGizmos() ... */" />
-                <marker date="1610888079122" expanded="true" signature="1197:1507" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="1535:2149" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="2004:2068" ph="{...}" />
-                <marker date="1610888079122" expanded="true" signature="2081:2143" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="6:105" ph="..." />
+                <marker date="1610888331643" expanded="true" signature="137:2184" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="197:398" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="246:286" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="327:369" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="415:643" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="662:730" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="736:1168" ph="/* private void OnDrawGizmos() ... */" />
+                <marker date="1610888331643" expanded="true" signature="1193:1503" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="1531:2182" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="2037:2101" ph="{...}" />
+                <marker date="1610888331643" expanded="true" signature="2114:2176" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -297,14 +297,14 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/ProjectBase/Base/AutoPush.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Item/Stone.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BaseBullet.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/Witch.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/BaseEnemyAnimStateMgr.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/Witch.cs" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="316" />
-    <option name="y" value="102" />
+    <option name="x" value="90" />
+    <option name="y" value="75" />
     <option name="width" value="2560" />
     <option name="height" value="1338" />
   </component>
@@ -369,7 +369,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26155000" />
+    <option name="totallyTimeSpent" value="26935000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -381,7 +381,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="316" y="102" width="2560" height="1338" extended-state="0" />
+    <frame x="90" y="75" width="2560" height="1338" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
@@ -804,21 +804,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Witch.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="62" column="100" selection-start-line="62" selection-start-column="100" selection-end-line="62" selection-end-column="100" />
+        <state relative-caret-position="1014">
+          <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
           <folding>
-            <marker date="1610888079122" expanded="true" signature="6:105" ph="..." />
-            <marker date="1610888079122" expanded="true" signature="137:2151" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="197:402" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="246:313" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="354:396" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="419:647" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="666:734" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="740:1172" ph="/* private void OnDrawGizmos() ... */" />
-            <marker date="1610888079122" expanded="true" signature="1197:1507" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="1535:2149" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="2004:2068" ph="{...}" />
-            <marker date="1610888079122" expanded="true" signature="2081:2143" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="6:105" ph="..." />
+            <marker date="1610888331643" expanded="true" signature="137:2184" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="197:398" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="246:286" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="327:369" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="415:643" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="662:730" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="736:1168" ph="/* private void OnDrawGizmos() ... */" />
+            <marker date="1610888331643" expanded="true" signature="1193:1503" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="1531:2182" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="2037:2101" ph="{...}" />
+            <marker date="1610888331643" expanded="true" signature="2114:2176" ph="{...}" />
           </folding>
         </state>
       </provider>
