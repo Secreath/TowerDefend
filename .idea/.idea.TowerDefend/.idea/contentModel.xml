@@ -18,6 +18,12 @@
             <e p="BaseEnemyAnimStateMgr.cs" t="Include" />
             <e p="Witch.cs" t="Include" />
           </e>
+          <e p="GameUi" t="Include">
+            <e p="TowerUi.cs" t="Include" />
+          </e>
+          <e p="Helper" t="Include">
+            <e p="LittleWitch.cs" t="Include" />
+          </e>
           <e p="Item" t="Include">
             <e p="Stone.cs" t="Include" />
           </e>
@@ -26,6 +32,7 @@
             <e p="Tools.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
+            <e p="FollowMgr.cs" t="Include" />
             <e p="PlayerAnimStateMgr.cs" t="Include" />
             <e p="PlayerStateMgr.cs" t="Include" />
           </e>

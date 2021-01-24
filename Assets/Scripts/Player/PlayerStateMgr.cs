@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -11,16 +10,18 @@ namespace Player
     {
         public static PlayerStateMgr Instance;
         
-        public static FaceDir FaceToDir;
-        public static FaceDir BackToDir;
+        public FaceDir FaceToDir;
+        public FaceDir BackToDir;
+        public Vector2 FollowPoint;
+        private FaceDir _lastDir;
         
         private BoxCollider2D _box;
         private Rigidbody2D _rb;
-
         
         private Vector2 _faceDir;
         private Vector2 _moveDir;
 
+        
         public float walkSpeed = 10f;
         private void Awake()
         {
@@ -34,9 +35,11 @@ namespace Player
         
         void Start()
         {
+            FaceToDir = FaceDir.Down;
+            _lastDir = FaceDir.Up;
             _box = transform.GetComponent<BoxCollider2D>();
             _rb = transform.GetComponent<Rigidbody2D>();
-            
+
         }
 
 
@@ -47,7 +50,6 @@ namespace Player
             switch (context.phase)
             {
                 case InputActionPhase.Performed:
-                    Debug.Log("LOOK");
                     _faceDir = _moveDir;
                     PlayerAnimStateMgr.SetFaceDir(_faceDir.y);
                     SetPlayerFaceTo(_faceDir);
@@ -84,31 +86,39 @@ namespace Player
         {
             return Instance;
         }
-
+        
         public void SetPlayerFaceTo(Vector2 faceDir)
         {
             if(faceDir== Vector2.zero)
                 return;
+            _lastDir = FaceToDir;
             if (faceDir.y > 0)
             {
                 FaceToDir = FaceDir.Up;
                 BackToDir = FaceDir.Down;
+                FollowPoint = new Vector2(0,0.8f) + new Vector2(Random.Range(-0.5f,0.5f),Random.Range(0.5f,-0.2f));
             }
             else if (faceDir.y < 0)
             {
                 FaceToDir = FaceDir.Down;
                 BackToDir = FaceDir.Up;
+                FollowPoint = new Vector2(0,-0.8f)+ new Vector2(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.2f));
             }
             else if (faceDir.x > 0)
             {
                 FaceToDir = FaceDir.Right;
                 BackToDir = FaceDir.Left;
+                FollowPoint = new Vector2(0.8f,0)+ new Vector2(Random.Range(0.5f,-0.2f),Random.Range(-0.5f,0.5f));
             }
             else if (faceDir.x < 0)
             {
                 FaceToDir = FaceDir.Left;
                 BackToDir = FaceDir.Right;
+                FollowPoint = new Vector2(-0.8f,0) + new Vector2(Random.Range(-0.5f,0.2f),Random.Range(-0.5f,0.5f));
             }
+
+            FollowPoint += (Vector2)transform.position;
+
         }
 
     }

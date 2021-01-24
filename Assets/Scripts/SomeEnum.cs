@@ -26,5 +26,15 @@ namespace Enemy
         Walk,
         Dead
     }
+}
 
+namespace Follower
+{
+    public enum FollowState
+    {
+        InRange,
+        OutRange,
+        CanAttack,
+        FollowEnemy
+    }
 }

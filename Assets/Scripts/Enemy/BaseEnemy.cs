@@ -8,17 +8,16 @@ using UnityEngine;
 
 public class BaseEnemy : BaseProperty,ITakeDamage
 {
-    protected EnemyState enemyState;
     protected BoxCollider2D box;
+    protected Rigidbody2D rb;
     protected BaseEnemyAnimStateMgr animStateMgr;
     
     protected override void Start()
     {
         base.Start();
-        enemyState = EnemyState.Walk;
         box = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
         animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
-        animStateMgr.TryChangeState(EnemyState.Walk);
     }
     
     public virtual void TakeDamage(int damage)

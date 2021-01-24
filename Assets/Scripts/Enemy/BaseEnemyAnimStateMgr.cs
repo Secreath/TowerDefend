@@ -26,7 +26,7 @@ namespace Enemy
                     _enemyState = enemyState;
                     break;
                 case EnemyState.Walk:
-                    _enemyState = enemyState;
+                        _enemyState = enemyState;
                     break;
                 case EnemyState.Attack:
                     _enemyState = enemyState;
@@ -35,7 +35,6 @@ namespace Enemy
                 
             OnEnemyStateChange(_enemyState);
         }
-            
             
         protected void OnEnemyStateChange(EnemyState enemyState)
         {

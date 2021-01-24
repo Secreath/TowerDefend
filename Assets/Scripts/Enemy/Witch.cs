@@ -7,30 +7,25 @@ using UnityEngine;
 public class Witch : BaseEnemy
 {
     public GameObject fireBall;
+    
+    private GameObject _attackTarget;
+    
     private void Update()
     {
-        if (enemyState == EnemyState.Walk)
+        if (animStateMgr.CurState() == EnemyState.Walk)
         {
             Move();
-        }else if (enemyState == EnemyState.Attack)
-        {
-            Attack();
         }
         CheckAround();
     }
 
     void Move()
     {
-        animStateMgr.TryChangeState(EnemyState.Walk);
         transform.Translate(Vector2.right * _curMoveSpeed* Time.deltaTime);
 //        transform.position = Vector3.MoveTowards(transform.position, target, step);
     }
 
-    void Attack()
-    {
-        animStateMgr.TryChangeState(EnemyState.Attack);
-    }
-    
+
 //    private void OnDrawGizmos()
 //    {
 //        Vector2 checkSize;
@@ -44,11 +39,11 @@ public class Witch : BaseEnemy
 
     void FireFireBall()
     {
-        GameObject fireBall = PoolMgr.GetInstance().PopObj("FireBall");
-        fireBall.GetComponent<BaseBullet>().Damage = atk;
-        fireBall.tag = "EnemyBullet";
-        fireBall.transform.position = transform.position;
-        fireBall.GetComponent<Rigidbody2D>().velocity = Vector2.right; 
+        if(_attackTarget == null || !_attackTarget.activeSelf)
+            return;
+        GameObject bullet = PoolMgr.GetInstance().PopObj("FireBall");
+        bullet.tag = "EnemyBullet";
+        bullet.GetComponent<BaseBullet>().SetShootDir(atk, _attackTarget.transform.position, transform.position);
     }
     
     void CheckAround()
@@ -61,15 +56,16 @@ public class Witch : BaseEnemy
         
         Vector2 checkPoint = (Vector2)transform.position + box.offset;
         Collider2D collider = Physics2D.OverlapBox(checkPoint, checkSize, 0, LayerMask.GetMask("Block"));
-
-        Debug.Log(collider != null);
+        
         if (collider != null)
         {
-            enemyState = EnemyState.Attack;
+            if(_attackTarget == null || _attackTarget.activeSelf)
+                _attackTarget = collider.gameObject;
+            animStateMgr.TryChangeState(EnemyState.Attack);
         }
         else
         {
-            enemyState = EnemyState.Walk;
+            animStateMgr.TryChangeState(EnemyState.Walk);
         }
     }
 }

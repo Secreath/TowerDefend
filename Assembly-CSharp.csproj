@@ -65,9 +65,12 @@
      <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
+     <Compile Include="Assets\Scripts\GameUi\TowerUi.cs" />
+     <Compile Include="Assets\Scripts\Helper\LittleWitch.cs" />
      <Compile Include="Assets\Scripts\Item\Stone.cs" />
      <Compile Include="Assets\Scripts\Other\Curve.cs" />
      <Compile Include="Assets\Scripts\Other\Tools.cs" />
+     <Compile Include="Assets\Scripts\Player\FollowMgr.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\AudioManager.cs" />

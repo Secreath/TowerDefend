@@ -89,10 +89,14 @@ public class PoolMgr : MonoBehaviour
     private void Start()
     {
         InitAPool("FireBall","Bullet/FireBall");
+        InitAPool("PeaBall","Bullet/PeaBall");
+        
     }
 
     public void InitAPool(string name, string path)
     {
+        if(PoolDic.ContainsKey(name))
+            return;
         ResMgr.GetInstance().LoadAsync<GameObject>(path, (obj) =>
         {
             obj.name = name;

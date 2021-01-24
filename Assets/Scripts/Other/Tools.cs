@@ -145,10 +145,10 @@ public class GetMousePos
 }
 public class GetAngle                                       //仅获取2d xy的夹角
 {
-    public static float  Angle(Vector3 PointOne, Vector3 PointTwo)
+    public static float  Angle(Vector3 target, Vector3 bullet)
     {
-        Vector3 positionOne = PointOne;
-        Vector3 aimDirection =( PointOne - PointTwo).normalized;
+        Vector3 positionOne = target;
+        Vector3 aimDirection =( target - bullet).normalized;
 
         //Vector2 relative = PointOne.transform.InverseTransformPoint(PointTwo).normalized;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
@@ -156,6 +156,18 @@ public class GetAngle                                       //仅获取2d xy的�
 
         return angle;
     }
+    
+    public static void RotaWithZ(Vector3 target, Vector3 bullet,GameObject Obj)
+    {
+        Vector3 positionOne = target;
+        Vector3 aimDirection =( target - bullet).normalized;
+
+        //Vector2 relative = PointOne.transform.InverseTransformPoint(PointTwo).normalized;
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        Obj.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+    
 }
 
 public class Lookdir 
