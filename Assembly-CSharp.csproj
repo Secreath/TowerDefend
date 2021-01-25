@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
      <Compile Include="Assets\Scripts\CharacterUiMgr.cs" />
      <Compile Include="Assets\Scripts\Construction\BaseCons.cs" />
+     <Compile Include="Assets\Scripts\Construction\LittleWitchHouse.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />

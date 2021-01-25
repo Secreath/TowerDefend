@@ -26,7 +26,28 @@ namespace Enemy
                     _enemyState = enemyState;
                     break;
                 case EnemyState.Walk:
-                        _enemyState = enemyState;
+                    _enemyState = enemyState;
+                    break;
+                case EnemyState.Attack:
+                    _enemyState = enemyState;
+                    break;
+            }
+                
+            OnEnemyStateChange(_enemyState);
+        }
+        
+        public void ChangeState(EnemyState enemyState)
+        {
+            if(enemyState == _enemyState)
+                return;
+                
+            switch (enemyState)
+            {
+                case EnemyState.Idle:
+                    _enemyState = enemyState;
+                    break;
+                case EnemyState.Walk:
+                    _enemyState = enemyState;
                     break;
                 case EnemyState.Attack:
                     _enemyState = enemyState;

@@ -49,11 +49,11 @@ TagManager:
   - name: map
     uniqueID: 359150895
     locked: 0
-  - name: enemy
-    uniqueID: 240833221
-    locked: 0
   - name: construction
     uniqueID: 1189882599
+    locked: 0
+  - name: enemy
+    uniqueID: 240833221
     locked: 0
   - name: player
     uniqueID: 1347642667

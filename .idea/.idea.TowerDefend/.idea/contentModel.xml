@@ -12,6 +12,7 @@
           <e p="CharacterUiMgr.cs" t="Include" />
           <e p="Construction" t="Include">
             <e p="BaseCons.cs" t="Include" />
+            <e p="LittleWitchHouse.cs" t="Include" />
           </e>
           <e p="Enemy" t="Include">
             <e p="BaseEnemy.cs" t="Include" />

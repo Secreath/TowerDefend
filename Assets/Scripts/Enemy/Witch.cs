@@ -65,7 +65,7 @@ public class Witch : BaseEnemy
         }
         else
         {
-            animStateMgr.TryChangeState(EnemyState.Walk);
+            animStateMgr.ChangeState(EnemyState.Walk);
         }
     }
 }

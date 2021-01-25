@@ -24,7 +24,7 @@ public class BaseProperty : MonoBehaviour
     }
     
 
-    public virtual void Dead()
+    protected virtual void Dead()
     {
         Destroy(gameObject);
     }

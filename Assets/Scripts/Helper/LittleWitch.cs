@@ -11,6 +11,7 @@ public class LittleWitch : BaseEnemy
 {
     public float atkDis;
 
+    private Transform _house;
     private GameObject _attackTarget;
     private Vector2 _followPoint;
     private Vector2 _lastPoint;
@@ -19,8 +20,7 @@ public class LittleWitch : BaseEnemy
     private FollowState _followType;
     private void Update()
     {
-        Debug.Log(_followType);
-        if (animStateMgr.CurState() == EnemyState.Walk)
+        if (animStateMgr.CurState() == EnemyState.Walk && _followType != FollowState.CanAttack)
         {
             Move();
         }
@@ -41,12 +41,12 @@ public class LittleWitch : BaseEnemy
       
     }
     
-    private void OnDrawGizmos()
-    {
-        Vector2 checkSize = new Vector2(atkDis, atkDis);
-        Vector2 checkPoint = (Vector2)transform.position;
-        Gizmos.DrawWireCube(checkPoint, checkSize);
-    }
+//    private void OnDrawGizmos()
+//    {
+//        Vector2 checkSize = new Vector2(atkDis, atkDis);
+//        Vector2 checkPoint = (Vector2)transform.position;
+//        Gizmos.DrawWireCube(checkPoint, checkSize);
+//    }
 
     void FireFireBall()
     {
@@ -120,7 +120,7 @@ public class LittleWitch : BaseEnemy
                 break;
             case FollowState.OutRange:
                 _followType = FollowState.OutRange;
-                animStateMgr.TryChangeState(EnemyState.Walk);
+                animStateMgr.ChangeState(EnemyState.Walk);
                 break;
             case FollowState.FollowEnemy:
                 if (_followType == FollowState.CanAttack && _attackTarget!= null)
@@ -131,5 +131,22 @@ public class LittleWitch : BaseEnemy
                 }
                 break;
         }
+        
+    }
+
+    protected override void Dead()
+    {
+        if (_house != null)
+        {
+            transform.parent = _house;
+            transform.localPosition = Vector3.zero;
+        }
+        gameObject.SetActive(false);
+
+    }
+
+    public void SetHouse(Transform house)
+    {
+        _house = house;
     }
 }
