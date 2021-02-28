@@ -9,6 +9,11 @@
         <e p="Scripts" t="Include">
           <e p="BaseBullet.cs" t="Include" />
           <e p="BaseProperty.cs" t="Include" />
+          <e p="BehaviorTree" t="Include">
+            <e p="BtNode.cs" t="Include" />
+            <e p="BTTest.cs" t="Include" />
+            <e p="TreeResult.cs" t="Include" />
+          </e>
           <e p="CharacterUiMgr.cs" t="Include" />
           <e p="Construction" t="Include">
             <e p="BaseCons.cs" t="Include" />
@@ -17,6 +22,9 @@
           <e p="Enemy" t="Include">
             <e p="BaseEnemy.cs" t="Include" />
             <e p="BaseEnemyAnimStateMgr.cs" t="Include" />
+            <e p="test" t="Include">
+              <e p="EnemyAction.cs" t="Include" />
+            </e>
             <e p="Witch.cs" t="Include" />
           </e>
           <e p="GameUi" t="Include">
@@ -66,6 +74,9 @@
               <e p="LoginPenal.cs" t="Include" />
               <e p="UIMgr.cs" t="Include" />
             </e>
+          </e>
+          <e p="Rode" t="Include">
+            <e p="TDRode.cs" t="Include" />
           </e>
           <e p="SomeEnum.cs" t="Include" />
           <e p="SomeInterface.cs" t="Include" />

@@ -60,12 +60,16 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BaseBullet.cs" />
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
+     <Compile Include="Assets\Scripts\BehaviorTree\BTTest.cs" />
+     <Compile Include="Assets\Scripts\BehaviorTree\BtNode.cs" />
+     <Compile Include="Assets\Scripts\BehaviorTree\TreeResult.cs" />
      <Compile Include="Assets\Scripts\CharacterUiMgr.cs" />
      <Compile Include="Assets\Scripts\Construction\BaseCons.cs" />
      <Compile Include="Assets\Scripts\Construction\LittleWitchHouse.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
+     <Compile Include="Assets\Scripts\Enemy\test\EnemyAction.cs" />
      <Compile Include="Assets\Scripts\GameUi\TowerUi.cs" />
      <Compile Include="Assets\Scripts\Helper\LittleWitch.cs" />
      <Compile Include="Assets\Scripts\Item\Stone.cs" />
@@ -88,6 +92,7 @@
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\BasePenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\LoginPenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\UIMgr.cs" />
+     <Compile Include="Assets\Scripts\Rode\TDRode.cs" />
      <Compile Include="Assets\Scripts\SomeEnum.cs" />
      <Compile Include="Assets\Scripts\SomeInterface.cs" />
      <Compile Include="Assets\Scripts\Teammate.cs" />
