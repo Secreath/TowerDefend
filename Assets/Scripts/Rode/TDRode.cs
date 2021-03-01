@@ -22,8 +22,11 @@ public class TDRode : MonoBehaviour
     
     
     private List<LineRenderer> lineRenderer = new List<LineRenderer>();
-    
-    
+
+    private int iLength = 0;
+    private int sLength = 0;
+    private int pLength = 0;
+    private int fLength = 0;
     void Start()
     {
         Debug.Log(pathLines[0].pathStr + " " +pathLines[0].path.Count);
@@ -31,35 +34,21 @@ public class TDRode : MonoBehaviour
         inflection = transform.Find("Inflection");
         path = transform.Find("Path");
         finish = transform.Find("Finish");
-        
+        InitLineRender();
+        SetRoad();
+    }
+
+    private void SetRoad()
+    {
         FindInflection();
         FindRode(starts,start);
         FindRode(paths,path);
         FindRode(finishs,finish);
-        InitLineRender();
+        for (int i = 0; i < pathLines.Count; i++)
+            AnalysisPathStr(pathLines[i]);
         RenderLine();
     }
-
-    private void FindInflection()
-    {
-        for (int i = 0; i < inflection.childCount; i++)
-        {
-            inflections.Add(inflection.GetChild(i));
-        }
-    }
-    private void FindRode(List<List<Transform>> pathList,Transform parent)
-    {
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform path = parent.GetChild(i);
-            pathList.Add(new List<Transform>());
-            for (int j = 0; j < path.childCount; j++)
-            {
-                pathList[i].Add(path.GetChild(j));
-            }
-        }
-    }
-
+    
     private void InitLineRender()
     {
         GameObject lineParent = new GameObject("Line");
@@ -81,10 +70,27 @@ public class TDRode : MonoBehaviour
             
             lineRenderer.Add(lr);
             pathLines[i].lineRenderer = lr;
-            AnalysisPathStr(pathLines[i]);
-            
-            
-            
+        }
+    }
+    private void FindInflection()
+    {
+        inflections.Clear();
+        for (int i = 0; i < inflection.childCount; i++)
+        {
+            inflections.Add(inflection.GetChild(i));
+        }
+    }
+    private void FindRode(List<List<Transform>> pathList,Transform parent)
+    {
+        pathList.Clear();
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform path = parent.GetChild(i);
+            pathList.Add(new List<Transform>());
+            for (int j = 0; j < path.childCount; j++)
+            {
+                pathList[i].Add(path.GetChild(j));
+            }
         }
     }
     
@@ -167,7 +173,7 @@ public class TDRode : MonoBehaviour
     
     void Update()
     {
-        RenderLine();
+        SetRoad();
     }
 }
 

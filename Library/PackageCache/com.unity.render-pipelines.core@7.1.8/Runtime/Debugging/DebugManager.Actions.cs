@@ -92,64 +92,64 @@ namespace UnityEngine.Rendering
             m_DebugActionStates[index] = new DebugActionState();
         }
 
-//        void SampleAction(int actionIndex)
-//        {
-//            var desc = m_DebugActions[actionIndex];
-//            var state = m_DebugActionStates[actionIndex];
-//
-//            //bool canSampleAction = (state.actionTriggered == false) || (desc.repeatMode == DebugActionRepeatMode.Delay && state.timer > desc.repeatDelay);
-//            if (state.runningAction == false)
-//            {
-//                // Check button triggers
-//                for (int buttonListIndex = 0; buttonListIndex < desc.buttonTriggerList.Count; ++buttonListIndex)
-//                {
-//                    var buttons = desc.buttonTriggerList[buttonListIndex];
-//                    bool allButtonPressed = true;
-//
-//                    foreach (var button in buttons)
-//                    {
-//                        allButtonPressed = Input.GetButton(button);
-//                        if (!allButtonPressed)
-//                            break;
-//                    }
-//
-//                    if (allButtonPressed)
-//                    {
-//                        state.TriggerWithButton(buttons, 1f);
-//                        break;
-//                    }
-//                }
-//
-//                // Check axis triggers
-//                if (desc.axisTrigger != "")
-//                {
-//                    float axisValue = Input.GetAxis(desc.axisTrigger);
-//
-//                    if (axisValue != 0f)
-//                        state.TriggerWithAxis(desc.axisTrigger, axisValue);
-//                }
-//
-//                // Check key triggers
-//                for (int keyListIndex = 0; keyListIndex < desc.keyTriggerList.Count; ++keyListIndex)
-//                {
-//                    var keys = desc.keyTriggerList[keyListIndex];
-//                    bool allKeyPressed = true;
-//
-//                    foreach (var key in keys)
-//                    {
-//                        allKeyPressed = Input.GetKey(key);
-//                        if (!allKeyPressed)
-//                            break;
-//                    }
-//
-//                    if (allKeyPressed)
-//                    {
-//                        state.TriggerWithKey(keys, 1f);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
+        void SampleAction(int actionIndex)
+        {
+            var desc = m_DebugActions[actionIndex];
+            var state = m_DebugActionStates[actionIndex];
+
+            //bool canSampleAction = (state.actionTriggered == false) || (desc.repeatMode == DebugActionRepeatMode.Delay && state.timer > desc.repeatDelay);
+            if (state.runningAction == false)
+            {
+                // Check button triggers
+                for (int buttonListIndex = 0; buttonListIndex < desc.buttonTriggerList.Count; ++buttonListIndex)
+                {
+                    var buttons = desc.buttonTriggerList[buttonListIndex];
+                    bool allButtonPressed = true;
+
+                    foreach (var button in buttons)
+                    {
+                        allButtonPressed = Input.GetButton(button);
+                        if (!allButtonPressed)
+                            break;
+                    }
+
+                    if (allButtonPressed)
+                    {
+                        state.TriggerWithButton(buttons, 1f);
+                        break;
+                    }
+                }
+
+                // Check axis triggers
+                if (desc.axisTrigger != "")
+                {
+                    float axisValue = Input.GetAxis(desc.axisTrigger);
+
+                    if (axisValue != 0f)
+                        state.TriggerWithAxis(desc.axisTrigger, axisValue);
+                }
+
+                // Check key triggers
+                for (int keyListIndex = 0; keyListIndex < desc.keyTriggerList.Count; ++keyListIndex)
+                {
+                    var keys = desc.keyTriggerList[keyListIndex];
+                    bool allKeyPressed = true;
+
+                    foreach (var key in keys)
+                    {
+                        allKeyPressed = Input.GetKey(key);
+                        if (!allKeyPressed)
+                            break;
+                    }
+
+                    if (allKeyPressed)
+                    {
+                        state.TriggerWithKey(keys, 1f);
+                        break;
+                    }
+                }
+            }
+        }
 
         void UpdateAction(int actionIndex)
         {
@@ -165,7 +165,7 @@ namespace UnityEngine.Rendering
             for (int actionIndex = 0; actionIndex < m_DebugActions.Length; ++actionIndex)
             {
                 UpdateAction(actionIndex);
-//                SampleAction(actionIndex);
+                SampleAction(actionIndex);
             }
         }
 

@@ -10,6 +10,8 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+Library/Artifacts
+Library/StateCache
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
@@ -57,9 +59,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-/ios_build/
 /Assets/GUI Kit Neon/
 /Assets/GUI Kit Neon.meta
+
 
 # Crashlytics generated file
 crashlytics-build.properties
