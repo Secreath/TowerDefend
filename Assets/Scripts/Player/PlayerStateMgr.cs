@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 using Random = UnityEngine.Random;
 
 namespace Player
@@ -18,7 +16,6 @@ namespace Player
         private BoxCollider2D _box;
         private Rigidbody2D _rb;
         
-        private Vector2 _faceDir;
         private Vector2 _moveDir;
 
         
@@ -39,42 +36,34 @@ namespace Player
             _lastDir = FaceDir.Up;
             _box = transform.GetComponent<BoxCollider2D>();
             _rb = transform.GetComponent<Rigidbody2D>();
-
+            InPutMgr.GetInstance().StartOrEnd(true);
+            EventCenter.GetInstance().AddEventListener<Vector2>("MoveInput",MoveInput);
+            
         }
+       
 
 
-        public void OnMove(InputAction.CallbackContext context)
+        private void MoveInput(Vector2 move)
         {
-            _moveDir = context.ReadValue<Vector2>();
-            
-            switch (context.phase)
+            if (move != Vector2.zero)
             {
-                case InputActionPhase.Performed:
-                    _faceDir = _moveDir;
-                    PlayerAnimStateMgr.SetFaceDir(_faceDir.y);
-                    SetPlayerFaceTo(_faceDir);
-                    if (_faceDir.x > 0)
-                    {
-                        transform.localScale = Vector3.one;
-                    }
-                    else if (_faceDir.x < 0) //==0的时候保持上一次的方向就好
-                    {
-                        transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    
-                    break;
-                case InputActionPhase.Started:
-//                    if (context.interaction is SlowTapInteraction)
-                    break;
-                case InputActionPhase.Canceled:
-                    break;
+                PlayerAnimStateMgr.SetFaceDir(move.y);
+                SetPlayerFaceTo(move);
+                if (move.x > 0)
+                {
+                    transform.localScale = Vector3.one;
+                }
+                else if (move.x < 0) //==0的时候保持上一次的方向就好
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
             }
-            
+
+            _moveDir = move;
             if(_moveDir != Vector2.zero)
                 PlayerAnimStateMgr.TryChangeState(PlayerState.Walk);
             else
                 PlayerAnimStateMgr.TryChangeState(PlayerState.Idle);
-            
         }
 
         private void Update()

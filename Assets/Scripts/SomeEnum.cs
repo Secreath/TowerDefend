@@ -23,6 +23,7 @@ namespace Enemy
     {
         Idle,
         Attack,
+        WalkToEnemy,
         Walk,
         Dead
     }

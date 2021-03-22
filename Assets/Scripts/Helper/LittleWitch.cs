@@ -31,12 +31,12 @@ public class LittleWitch : BaseEnemy
     {
         if (_followType != FollowState.FollowEnemy && (Vector2) transform.position != _followPoint)
         {
-            float disSpeed = _disToPlayer * _curMoveSpeed;    
+            float disSpeed = _disToPlayer * curSpeed;    
             transform.position = Vector3.MoveTowards(transform.position, _followPoint, disSpeed * Time.deltaTime);
         }
         else if(_followType == FollowState.FollowEnemy)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _attackTarget.transform.position, (_curMoveSpeed + 3) * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _attackTarget.transform.position, (curSpeed + 3) * Time.deltaTime);
         }
       
     }

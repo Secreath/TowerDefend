@@ -30,7 +30,8 @@ public class InPutMgr : BaseManager<InPutMgr>
     }
     private void GetAxis()
     {  
-        EventCenter.GetInstance().EventTrigger("MoveHorizontal", Input.GetAxis("Horizontal"));
+        Vector2 move = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
+        EventCenter.GetInstance().EventTrigger("MoveInput", move);
     }
 
     public void InputUpdate()
@@ -45,6 +46,7 @@ public class InPutMgr : BaseManager<InPutMgr>
         CheckKeyCode(KeyCode.A);
         CheckKeyCode(KeyCode.S);
         CheckKeyCode(KeyCode.D);
+        CheckKeyCode(KeyCode.J);
         GetAxis();
     }  
 

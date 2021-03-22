@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class TDRode : MonoBehaviour
+public class TDRode : Singleton<TDRode>
 {
     public Material lineMat;
     public List<PathLine> pathLines;
@@ -27,6 +27,8 @@ public class TDRode : MonoBehaviour
     private int sLength = 0;
     private int pLength = 0;
     private int fLength = 0;
+
+    
     void Start()
     {
         Debug.Log(pathLines[0].pathStr + " " +pathLines[0].path.Count);
@@ -174,6 +176,15 @@ public class TDRode : MonoBehaviour
     void Update()
     {
         SetRoad();
+    }
+
+    public static List<Transform> GetPathList(int rodeID)
+    {
+        
+        if (Instance.pathLines.Count > rodeID)
+            return Instance.pathLines[rodeID].path;
+        
+        return new List<Transform>();
     }
 }
 

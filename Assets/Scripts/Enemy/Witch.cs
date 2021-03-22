@@ -10,6 +10,7 @@ public class Witch : BaseEnemy
     
     private GameObject _attackTarget;
     
+    
     private void Update()
     {
         if (animStateMgr.CurState() == EnemyState.Walk)
@@ -21,7 +22,7 @@ public class Witch : BaseEnemy
 
     void Move()
     {
-        transform.Translate(Vector2.right * _curMoveSpeed* Time.deltaTime);
+        transform.Translate(Vector2.right * curSpeed* Time.deltaTime);
 //        transform.position = Vector3.MoveTowards(transform.position, target, step);
     }
 

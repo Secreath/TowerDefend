@@ -11,16 +11,35 @@ public class BaseProperty : MonoBehaviour
     [SerializeField]protected int atk;
     [SerializeField]protected int maxHp;
     [SerializeField]protected float moveSpeed;
-    
-    
+
+    protected bool canMove;
     protected int _curHp;
-    protected float _curMoveSpeed;
+
+    private float _curSpeed;
+    protected float curSpeed
+    {
+        get
+        {
+            if (canMove)
+                return _curSpeed;
+            
+            return 0;
+        }
+        set
+        {
+            if (value < 0)
+                _curSpeed = 0;
+            else
+                _curSpeed = value;
+        }
+    }
     
     protected virtual void Start()
     {
+        canMove = true;
         uimgr = transform.Find("Canvas").GetComponent<CharacterUiMgr>();
         _curHp = maxHp;
-        _curMoveSpeed = moveSpeed;
+        curSpeed = moveSpeed;
     }
     
 
