@@ -281,6 +281,66 @@ public class FindFiles
     #endregion
 }
 
+public class VTool
+{
+    public static Vector2 ToV2(Vector3 vector3)
+    {
+        return new Vector2(vector3.x,vector3.y);
+    }
+    public static Vector2Int ToV2Int(Vector3 vector3)
+    {
+        return new Vector2Int((int)vector3.x,(int)vector3.y);
+    }
+    
+    public static Vector3Int ToV3Int(Vector3 vector3)
+    {
+        return new Vector3Int((int)vector3.x,(int)vector3.y,(int)vector3.z);
+    }
+
+    public static Vector3Int ToPointPos(Vector3 vector3)
+    {
+        int x = (int) vector3.x;
+        int y = (int) vector3.y;
+
+        if (vector3.x < 0)
+            x -= 1;
+        if (vector3.y < 0)
+            y -= 1;
+        return new Vector3Int(x,y,0);
+    }
+    
+    public static Vector3Int ToPointPos(Vector2 vector2)
+    {
+        return ToPointPos(new Vector3(vector2.x,vector2.y,0));
+    }
+    
+    
+    public static Vector3 ToTilePos(Vector3 vector3)
+    {
+        return ToPointPos(vector3) + new Vector3(0.5f, 0.5f,0); 
+    }
+    
+    public static Vector3 ToTilePos(Vector2 vector2)
+    {
+        return ToPointPos(vector2) + new Vector3(0.5f, 0.5f,0); 
+    }
+}
+
+public class Swap
+{
+    public static void ValueType<T>(ref T a,ref T b)
+    {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    public static void ReferenceType<T>(T a,T b)
+    {
+        ValueType(ref a, ref b);
+    }
+}
+
 public class GetDir
 {
      int dir;               //因为要保留上次的dir

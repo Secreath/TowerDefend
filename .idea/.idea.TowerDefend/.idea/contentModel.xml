@@ -12,6 +12,7 @@
         <e p="Scripts" t="Include">
           <e p="BaseBullet.cs" t="Include" />
           <e p="BaseProperty.cs" t="Include" />
+          <e p="BaseTile.cs" t="Include" />
           <e p="BehaviorTree" t="Include">
             <e p="BtNode.cs" t="Include" />
             <e p="BTTest.cs" t="Include" />
@@ -84,21 +85,23 @@
             </e>
           </e>
           <e p="Rode" t="Include">
-            <e p="TDRode.cs" t="Include" />
+            <e p="TDRoad.cs" t="Include" />
           </e>
           <e p="Singleton.cs" t="Include" />
           <e p="SomeEnum.cs" t="Include" />
           <e p="SomeInterface.cs" t="Include" />
           <e p="Teammate.cs" t="Include" />
-          <e p="TileScript.cs" t="Include" />
           <e p="Tower" t="Include">
             <e p="BaseCons.cs" t="Include" />
+            <e p="BaseTower.cs" t="Include" />
             <e p="LittleWitchHouse.cs" t="Include" />
             <e p="Tower1.cs" t="Include" />
             <e p="TowerRange.cs" t="Include" />
+            <e p="UpGradeTower.cs" t="Include" />
           </e>
           <e p="Ui" t="Include">
             <e p="CircleChoosePop.cs" t="Include" />
+            <e p="UiEvent.cs" t="Include" />
             <e p="UiManager.cs" t="Include" />
           </e>
         </e>

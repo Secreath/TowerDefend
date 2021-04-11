@@ -125,7 +125,7 @@ namespace Enemy
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (animStateMgr.CurState() == EnemyState.Attack && other.CompareTag("Block"))
+            if (other.CompareTag("Block") && animStateMgr.CurState() == EnemyState.Attack)
             {
                 Debug.Log("hit");
 //                other.GetComponent<ITakeDamage>().TakeDamage(atk);

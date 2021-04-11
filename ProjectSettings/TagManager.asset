@@ -43,14 +43,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: map
     uniqueID: 359150895
     locked: 0
   - name: rode
     uniqueID: 4015088041
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: build
     uniqueID: 2360680345

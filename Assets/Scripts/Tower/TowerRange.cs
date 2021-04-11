@@ -3,73 +3,77 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerRange : MonoBehaviour
+namespace Tower
 {
-    private Tower1 tower;
-
-    private SpriteRenderer sprite;
-    private bool onAttack;
-    private GameObject attackTarget;
-    private List<GameObject> enemyList;
-
-    private float attackTime;
-    public void Start()
+    public class TowerRange : MonoBehaviour
     {
-        enemyList = new List<GameObject>();
-        sprite = transform.GetComponent<SpriteRenderer>();
-        tower = transform.parent.GetComponent<Tower1>();
-    }
+        private Tower1 tower;
 
-    public void SetRange(float range,float atttckTime)
-    {
-        transform.localScale = Vector3.one * range;
-        this.attackTime = atttckTime;
-    }
+        private SpriteRenderer sprite;
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
+
+        private GameObject target;
+
+        private Vector2 checkPos;
+        private bool onAttack;
+
+        private float attackTime;
+        private float range;
+        
+        private void Start()
         {
-            sprite.enabled = true;
+            checkPos = transform.parent.position + transform.position;
+            sprite = transform.GetComponent<SpriteRenderer>();
+            tower = transform.parent.GetComponent<Tower1>();
+            Debug.Log(checkPos);
+        }
+
+        private void Update()
+        {
+            CheckRange();
+        }
+
+        public void SetRange(float range,float atttckTime)
+        {
+            transform.localScale = Vector3.one * range;
+            this.range = range;
+            this.attackTime = atttckTime;
+            
         }
         
-        if (other.CompareTag("Enemy"))
+        private void CheckRange()
         {
-            Debug.Log("inrange");
-            if(!enemyList.Contains(other.gameObject))
-                enemyList.Add(other.gameObject);
-            if (attackTarget == null)
+            Collider2D other = Physics2D.OverlapCircle(checkPos, range ,LayerMask.GetMask("Enemy"));
+            
+            if (other != null)
             {
-                attackTarget = other.gameObject;
-                StartCoroutine(CheckEnemy(attackTarget));
+                if (!onAttack)
+                {
+                    target = other.gameObject;
+                    StartCoroutine(AttackEnemy());
+                }
+                onAttack = true;
+
+            }
+            else
+            {
+                target = null;
+                onAttack = false;
+            }
+            
+        }
+
+       
+
+        private IEnumerator AttackEnemy()
+        {
+            while (target != null)
+            {
+                Debug.Log("ATTACK");
+                tower.Attack(target.transform.position);
+                yield return new WaitForSeconds(attackTime);
             }
         }
     }
-    
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            sprite.enabled = true;
-        }
-        
-        if (other.CompareTag("Enemy"))
-        {
-            if (other)
-            {
-                
-            }
-            enemyList.Remove(other.gameObject);
-            attackTarget = null;
-        }
-    }
 
-    private IEnumerator CheckEnemy(GameObject target)
-    {
-        while (target != null)
-        {
-            tower.Attack(attackTarget.transform.position);
-            yield return new WaitForSeconds(attackTime);
-        }
-    }
 }

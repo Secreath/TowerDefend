@@ -1,70 +1,47 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tower;
+using UI;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+namespace Player
 {
-    private bool pressJ;
-
-    void Start()
+    public class PlayerInput : Singleton<PlayerInput>
     {
-        EventCenter.GetInstance().AddEventListener<KeyCode>("KeyPress",CheckKeyPress);
-        EventCenter.GetInstance().AddEventListener<KeyCode>("KeyDown",CheckKeyDown);
-        EventCenter.GetInstance().AddEventListener<KeyCode>("KeyUp",CheckKeyUp);
-    }
- 
-    private void CheckKeyPress(KeyCode key)
-    {
-            
-    }
-        
-    private void CheckKeyDown(KeyCode key)
-    {
-        switch (key)
+        void Start()
         {
-            case KeyCode.J:
-                Debug.Log("0");
-                pressJ = true;
-                break;
+            EventCenter.GetInstance().AddEventListener<KeyCode>("KeyPress",CheckKeyPress);
+            EventCenter.GetInstance().AddEventListener<KeyCode>("KeyDown",CheckKeyDown);
+            EventCenter.GetInstance().AddEventListener<KeyCode>("KeyUp",CheckKeyUp);
         }
-    }
-        
-    private void CheckKeyUp(KeyCode key)
-    {
-        switch (key)
+     
+        private void CheckKeyPress(KeyCode key)
         {
-            case KeyCode.J:
-                pressJ = false;
-                break;
-        }   
-    }
-
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Construction"))
+                
+        }
+            
+        private void CheckKeyDown(KeyCode key)
         {
-            if (pressJ)
+            switch (key)
             {
-                UiManager.Instance.MoveTowerUi(other.transform.position);
-                pressJ = false;
-
+                case KeyCode.J:
+                    UiManager.Instance.ShowTowerUi(transform.position);
+                    break;
+                case KeyCode.Escape:
+                    UiManager.Instance.EscPreUi();
+                    break;
             }
         }
-    }
-
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Construction"))
+            
+        private void CheckKeyUp(KeyCode key)
         {
-            pressJ = false;
+            switch (key)
+            {
+                
+            }   
         }
+       
     }
 
-    void Update()
-    {
-        
-    }
 }

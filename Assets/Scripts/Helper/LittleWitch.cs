@@ -65,7 +65,7 @@ public class LittleWitch : BaseEnemy
         Vector2 checkPoint = (Vector2)transform.position + box.offset;
         Collider2D attackRange = Physics2D.OverlapBox(checkPoint, checkSize, 0, LayerMask.GetMask("Enemy"));
         
-        _disToPlayer = Vector2.Distance(transform.position, PlayerStateMgr.GetInstance().transform.position);
+        _disToPlayer = Vector2.Distance(transform.position, PlayerStateMgr.Instance.transform.position);
         
         if (attackRange != null)
         {
@@ -93,7 +93,7 @@ public class LittleWitch : BaseEnemy
         }
         else
         {
-            _followPoint = PlayerStateMgr.GetInstance().FollowPoint;
+            _followPoint = PlayerStateMgr.Instance.FollowPoint;
             TryToChangeType(FollowState.OutRange);
         }
     }

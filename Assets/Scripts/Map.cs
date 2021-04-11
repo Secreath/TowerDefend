@@ -1,74 +1,84 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Tower;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Map : MonoBehaviour
+namespace mapThing
 {
-    public Tilemap background;
-    public Tilemap path;
-
-    private List<Vector3Int> pathList;
-
-    private Vector3Int startPoint;
-    private Vector3Int endPoint;
-    void Start()
-    {
-        startPoint = Vector3Int.zero;
-        endPoint = Vector3Int.zero;
-        GetStartPointAndEndPoint();
-        
-        BoundsInt bounds = path.cellBounds;
-        TileBase[] allTiles = path.GetTilesBlock(bounds);
-        
-        Debug.Log(startPoint + "  " + endPoint);
-        GetPathList();
-    }
     
-    private void GetPathList()
+    public class Map : Singleton<Map>
     {
-        BoundsInt bounds = path.cellBounds;
-//        TileBase[] allTiles = path.GetTilesBlock(bounds);
-        pathList = new List<Vector3Int>();
+        private Tilemap background;
+        private Tilemap road;
 
-        for (int i = path.origin.y; i < path.origin.y + path.size.y; i++)
+        private List<Vector3Int> pathList;
+        private List<Vector3Int> bgList;
+        
+        
+        
+        void Start()
         {
-            for (int j = path.origin.x; j < path.origin.x + path.size.x; j++)
+            background = transform.Find("background").GetComponent<Tilemap>();
+            road = transform.Find("road").GetComponent<Tilemap>();
+            GetPathList();
+            GetBgList();
+        }
+        
+        private void GetPathList()
+        {
+            pathList = new List<Vector3Int>();
+
+            for (int i = road.origin.y; i < road.origin.y + road.size.y; i++)
             {
-                Vector3Int pos = new Vector3Int(j,i,0);
-                if (path.HasTile(pos))
+                for (int j = road.origin.x; j < road.origin.x + road.size.x; j++)
                 {
-                    Debug.Log(pos);
-                    pathList.Add(pos);
+                    Vector3Int pos = new Vector3Int(j,i,0);
+                    if (road.HasTile(pos))
+                    {
+                        PlaceTile(TileType.road, pos);
+                        pathList.Add(pos);
+                    }
                 }
             }
         }
-    }
-    private void GetStartPointAndEndPoint()
-    {
-        while (background.HasTile(startPoint))
-        {
-            startPoint += Vector3Int.down;
-        }
-
-        startPoint -= Vector3Int.down;
         
-        while (background.HasTile(startPoint))
+        private void GetBgList()
         {
-            startPoint += Vector3Int.left;
-        }
+            bgList = new List<Vector3Int>();
 
-        startPoint -= Vector3Int.left;
-        while (background.HasTile(endPoint))
-        {
-            endPoint += Vector3Int.up; 
+            for (int i = background.origin.y; i < background.origin.y + background.size.y; i++)
+            {
+                for (int j = background.origin.x; j < background.origin.x + background.size.x; j++)
+                {
+                    Vector3Int pos = new Vector3Int(j,i,0);
+                    
+                    if (background.HasTile(pos) && !pathList.Contains(pos))
+                    {
+                        PlaceTile(TileType.BackGround, pos);
+                        bgList.Add(pos);
+                    }
+                }
+            }
         }
-        endPoint -= Vector3Int.up;
         
-        while (background.HasTile(endPoint))
+        private void OnMouseOver()
         {
-            endPoint += Vector3Int.right; 
+            if (Input.GetMouseButtonDown(0))
+            {
+                UiManager.Instance.ShowTowerUi(GetMousePos.GetMousePosition());
+            }
         }
-        endPoint -= Vector3Int.right;
+        
+        private void PlaceTile(TileType tileType,Vector3Int pos)
+        {
+            Point point = new Point(pos.x, pos.y);
+            point.SetTile(new BaseTile(this,point,tileType));
+            
+        }
+        
     }
+
 }

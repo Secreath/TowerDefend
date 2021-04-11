@@ -4,9 +4,14 @@ using Random = UnityEngine.Random;
 
 namespace Player
 {
-    public class PlayerStateMgr : MonoBehaviour
+    [Serializable]
+    public class PlayerProperty
     {
-        public static PlayerStateMgr Instance;
+        public float walkSpeed = 10f;
+        public int towerPoint = 1;
+    }
+    public class PlayerStateMgr : Singleton<PlayerStateMgr>
+    {
         
         public FaceDir FaceToDir;
         public FaceDir BackToDir;
@@ -19,16 +24,7 @@ namespace Player
         private Vector2 _moveDir;
 
         
-        public float walkSpeed = 10f;
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-            DontDestroyOnLoad(gameObject);
-        }
-        
+        public PlayerProperty player;
         
         void Start()
         {
@@ -68,14 +64,9 @@ namespace Player
 
         private void Update()
         {
-            _rb.velocity = _moveDir * walkSpeed;
+            _rb.velocity = _moveDir * player.walkSpeed;
         }
 
-        public static PlayerStateMgr GetInstance()
-        {
-            return Instance;
-        }
-        
         public void SetPlayerFaceTo(Vector2 faceDir)
         {
             if(faceDir== Vector2.zero)

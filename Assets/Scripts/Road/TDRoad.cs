@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class TDRode : Singleton<TDRode>
+public class TDRoad : Singleton<TDRoad>
 {
     public Material lineMat;
     public List<PathLine> pathLines;
@@ -43,9 +43,9 @@ public class TDRode : Singleton<TDRode>
     private void SetRoad()
     {
         FindInflection();
-        FindRode(starts,start);
-        FindRode(paths,path);
-        FindRode(finishs,finish);
+        FindRoad(starts,start);
+        FindRoad(paths,path);
+        FindRoad(finishs,finish);
         for (int i = 0; i < pathLines.Count; i++)
             AnalysisPathStr(pathLines[i]);
         RenderLine();
@@ -53,6 +53,9 @@ public class TDRode : Singleton<TDRode>
     
     private void InitLineRender()
     {
+        if(transform.Find("Line") != null)
+            return;
+        
         GameObject lineParent = new GameObject("Line");
         lineParent.transform.parent = transform;
         lineParent.transform.localPosition = Vector3.zero;
@@ -82,7 +85,7 @@ public class TDRode : Singleton<TDRode>
             inflections.Add(inflection.GetChild(i));
         }
     }
-    private void FindRode(List<List<Transform>> pathList,Transform parent)
+    private void FindRoad(List<List<Transform>> pathList,Transform parent)
     {
         pathList.Clear();
         for (int i = 0; i < parent.childCount; i++)
@@ -165,7 +168,8 @@ public class TDRode : Singleton<TDRode>
             pathLines[i].lineRenderer.positionCount = pathLines[i].path.Count;
             for (int j = 0; j < pathLines[i].path.Count; j++)
             {
-                Vector3 pos = pathLines[i].path[j].position;
+                
+                Vector3 pos = VTool.ToTilePos(pathLines[i].path[j].position);
                 pathLines[i].lineRenderer.SetPosition(j,pos);
             }
         }
@@ -178,11 +182,11 @@ public class TDRode : Singleton<TDRode>
         SetRoad();
     }
 
-    public static List<Transform> GetPathList(int rodeID)
+    public static List<Transform> GetPathList(int roadID)
     {
         
-        if (Instance.pathLines.Count > rodeID)
-            return Instance.pathLines[rodeID].path;
+        if (Instance.pathLines.Count > roadID)
+            return Instance.pathLines[roadID].path;
         
         return new List<Transform>();
     }

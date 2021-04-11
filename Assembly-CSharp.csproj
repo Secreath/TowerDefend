@@ -60,6 +60,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BaseBullet.cs" />
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
+     <Compile Include="Assets\Scripts\BaseTile.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\BTTest.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\BtNode.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\TreeResult.cs" />
@@ -99,17 +100,19 @@
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\BasePenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\LoginPenal.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\UIMgr.cs" />
-     <Compile Include="Assets\Scripts\Rode\TDRode.cs" />
+     <Compile Include="Assets\Scripts\Road\TDRoad.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\SomeEnum.cs" />
      <Compile Include="Assets\Scripts\SomeInterface.cs" />
      <Compile Include="Assets\Scripts\Teammate.cs" />
-     <Compile Include="Assets\Scripts\TileScript.cs" />
      <Compile Include="Assets\Scripts\Tower\BaseCons.cs" />
+     <Compile Include="Assets\Scripts\Tower\BaseTower.cs" />
      <Compile Include="Assets\Scripts\Tower\LittleWitchHouse.cs" />
      <Compile Include="Assets\Scripts\Tower\Tower1.cs" />
      <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />
+     <Compile Include="Assets\Scripts\Tower\UpGradeTower.cs" />
      <Compile Include="Assets\Scripts\Ui\CircleChoosePop.cs" />
+     <Compile Include="Assets\Scripts\Ui\UIEvent.cs" />
      <Compile Include="Assets\Scripts\Ui\UiManager.cs" />
      <None Include="Assets\Resources\Level.txt" />
  <Reference Include="Unity.Timeline.Editor">

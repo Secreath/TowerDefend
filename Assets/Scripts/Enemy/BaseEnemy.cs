@@ -8,7 +8,7 @@ using UnityEngine;
 public class BaseEnemy : BaseProperty,ITakeDamage
 {
     
-    public int RodeID;
+    public int RoadId;
     protected BoxCollider2D box;
     protected BaseEnemyAnimStateMgr animStateMgr;
     
@@ -27,7 +27,7 @@ public class BaseEnemy : BaseProperty,ITakeDamage
         animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
 
         
-        pathQueue = new Queue<Transform>(TDRode.GetPathList(RodeID));
+        pathQueue = new Queue<Transform>(TDRoad.GetPathList(RoadId));
         if (pathQueue == null || pathQueue.Count == 0)
         {
             Destroy(gameObject);
