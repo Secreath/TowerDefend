@@ -1081,7 +1081,7 @@ MonoBehaviour:
   atk: 100
   maxHp: 100
   moveSpeed: 2
-  RodeID: 0
+  RoadId: 0
   attackRadius: 0.4
   checkRadius: 2
 --- !u!61 &454602356
@@ -1666,7 +1666,7 @@ MonoBehaviour:
   atk: 10
   maxHp: 100
   moveSpeed: 1
-  RodeID: 0
+  RoadId: 0
   atkDis: 3.5
 --- !u!61 &639450738
 BoxCollider2D:
@@ -2280,7 +2280,7 @@ GameObject:
   - component: {fileID: 1047656867}
   - component: {fileID: 1047656866}
   m_Layer: 0
-  m_Name: rode
+  m_Name: road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
