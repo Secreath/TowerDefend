@@ -3,18 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tower
+namespace tower
 {
-    public enum TowerType
-    {
-        Fire = 0,
-        Shoot = 1,
-        Spawn = 2,
-        End
-    }
-
-   
-    
     public class Tower1 : BaseTower
     {
         public float range;

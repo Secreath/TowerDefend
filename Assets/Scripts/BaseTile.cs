@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tower;
-using UI;
+using tower;
+using ui;
 using UnityEngine;
 
 namespace mapThing

@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AssestMgr.cs" />
      <Compile Include="Assets\Scripts\BaseBullet.cs" />
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
      <Compile Include="Assets\Scripts\BaseTile.cs" />
@@ -73,7 +74,6 @@
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
      <Compile Include="Assets\Scripts\Enemy\test\EnemyAction.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\GameUi\TowerUi.cs" />
      <Compile Include="Assets\Scripts\HeGizmosCircle.cs" />
      <Compile Include="Assets\Scripts\Helper\LittleWitch.cs" />
      <Compile Include="Assets\Scripts\Item\Stone.cs" />
@@ -85,6 +85,7 @@
      <Compile Include="Assets\Scripts\Player\PlayerAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateMgr.cs" />
+     <Compile Include="Assets\Scripts\Player\ShineImage.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\AudioManager.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\Base\AutoPush.cs" />
@@ -108,6 +109,7 @@
      <Compile Include="Assets\Scripts\Tower\BaseCons.cs" />
      <Compile Include="Assets\Scripts\Tower\BaseTower.cs" />
      <Compile Include="Assets\Scripts\Tower\LittleWitchHouse.cs" />
+     <Compile Include="Assets\Scripts\Tower\Tower.cs" />
      <Compile Include="Assets\Scripts\Tower\Tower1.cs" />
      <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />
      <Compile Include="Assets\Scripts\Tower\UpGradeTower.cs" />
@@ -336,6 +338,9 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Applications/Unity/Hub/Editor/2019.3.6f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween">
+ <HintPath>/Users/jihao/UnityProject/TowerDefend/Assets/Plugins/Demigiant/DOTween/DOTween.dll</HintPath>
  </Reference>
  <Reference Include="clipper_library">
  <HintPath>/Users/jihao/UnityProject/TowerDefend/Library/PackageCache/com.unity.cinemachine@2.7.1/Runtime/ThirdParty/clipper_library.dll</HintPath>
@@ -691,6 +696,12 @@
  <Reference Include="mscorlib">
  <HintPath>/Applications/Unity/Hub/Editor/2019.3.6f1/Unity.app/Contents/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{20D84044-B28E-DC9A-5B0F-07A77948812D}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

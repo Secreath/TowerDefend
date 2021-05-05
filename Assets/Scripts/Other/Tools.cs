@@ -326,6 +326,30 @@ public class VTool
     }
 }
 
+
+public class UiTool
+{
+    private static bool isLoop;
+    public static void BreathSprite(SpriteRenderer sprite,float minAlpha,float maxAlpha,float loopTime)
+    {
+            
+    }
+
+    
+//    private IEnumerator StartBreath(SpriteRenderer sprite, float minAlpha, float maxAlpha, float loopTime,bool isLoop)
+//    {
+//        float countTime = loopTime;
+//        float eachTime = 0.02f;
+//        Color color = sprite.color;
+//        sprite.color = ColorTool.ChangeAlpha(color, minAlpha);
+//        do
+//        {
+//            
+//        } while (countTime>=0);
+//        
+//        sprite.color = ColorTool.ChangeAlpha(color, maxAlpha);
+//    }
+}
 public class Swap
 {
     public static void ValueType<T>(ref T a,ref T b)
@@ -358,7 +382,7 @@ public class GetDir
     }
 }
 
-public class GetAColor
+public class ColorTool
 {
     static List<float> arr = new List<float>();
     public static Color RandomColor(float max = 1,float min = 0.7f,float alpha=0.7f)
@@ -383,6 +407,12 @@ public class GetAColor
             arr.RemoveAt(num);
         }
         return randomColor;
+    }
+
+    public static Color ChangeAlpha(Color color, float alpha)
+    {
+        color = new Color(color.r,color.g,color.b,alpha);
+        return color;
     }
    
 }

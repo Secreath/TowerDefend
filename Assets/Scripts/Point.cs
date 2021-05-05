@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using mapThing;
-using Tower;
+using tower;
 using UnityEngine;
 
 
@@ -21,6 +21,17 @@ public class Point
         get{ return new Vector3(X + 0.5f,Y + 0.5f);}
     }
 
+    public TowerType type
+    {
+        get
+        {
+            if (baseTower == null)
+                return TowerType.End;
+
+            return baseTower.tower.type;
+        }
+    }
+
     public bool HadTower;
     
     private BaseTile tile;
@@ -29,11 +40,11 @@ public class Point
         get { return tile; }
     }
 
-    private BaseTower tower;
+    private BaseTower baseTower;
 
-    public BaseTower Tower
+    public BaseTower BaseTower
     {
-        get { return tower; }
+        get { return baseTower; }
     }
     
     public Point(int x, int y)
@@ -42,7 +53,7 @@ public class Point
         this.Y = y;
         HadTower = false;
         tile = default;
-        tower = default;
+        baseTower = default;
         GameManager.Instance.AddTileDic(this);
     }
     
@@ -51,12 +62,17 @@ public class Point
         this.tile = tile;
     }
 
-    public void BuildTower(BaseTower tower)
+    public void SetTower(BaseTower tower)
     {
         HadTower = true;
-        this.tower = tower;
+        this.baseTower = tower;
     }
 
+    public void RemoveTower()
+    {
+        HadTower = false;
+        this.baseTower = default;
+    }
     
     public static bool operator !=(Point a, Point b)
     {

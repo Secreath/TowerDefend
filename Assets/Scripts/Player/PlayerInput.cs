@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tower;
-using UI;
+using tower;
+using ui;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerInput : Singleton<PlayerInput>
     {
+
+        private GameObject pickTower;
         void Start()
         {
             EventCenter.GetInstance().AddEventListener<KeyCode>("KeyPress",CheckKeyPress);
@@ -26,10 +28,32 @@ namespace Player
             switch (key)
             {
                 case KeyCode.J:
-                    UiManager.Instance.ShowTowerUi(transform.position);
+                    Point point = GameManager.Instance.GetPointByPos(transform.position);
+                    if (!point.HadTower  && GameManager.Instance.gameState != GameState.PickTower)
+                        UiManager.Instance.JKeyPress(transform.position);
+                    else if(point.HadTower && GameManager.Instance.gameState == GameState.PlayGame)
+                    {
+                        PickTower(point);
+                    }
+                    else if (!point.HadTower && GameManager.Instance.gameState == GameState.PickTower)
+                    {
+                        SetTower(point);
+                    }
                     break;
                 case KeyCode.Escape:
                     UiManager.Instance.EscPreUi();
+                    break;
+                case KeyCode.A:
+                    UiManager.Instance.PreOrNext(false);
+                    break;
+                case KeyCode.D:
+                    UiManager.Instance.PreOrNext(true);
+                    break;
+                case KeyCode.W:
+                    UiManager.Instance.PreOrNext(false);
+                    break;
+                case KeyCode.S:
+                    UiManager.Instance.PreOrNext(true);
                     break;
             }
         }
@@ -41,7 +65,24 @@ namespace Player
                 
             }   
         }
-       
+
+        public void PickTower(Point point)
+        {
+            pickTower = point.BaseTower.gameObject;
+            pickTower.transform.SetParent(transform);
+            pickTower.transform.localPosition = Vector3.zero;
+            point.RemoveTower();
+            GameManager.Instance.ChangeGameState(GameState.PickTower);
+        }
+
+        public void SetTower(Point point)
+        {
+            pickTower.transform.SetParent(null);
+            pickTower.transform.position = point.CenterPos;
+            pickTower.GetComponent<SpriteRenderer>().sortingOrder = point.Y;
+            point.SetTower(pickTower.GetComponent<BaseTower>());
+            GameManager.Instance.ChangeGameState(GameState.PlayGame);
+        }
     }
 
 }

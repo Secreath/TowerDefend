@@ -3,13 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpGradeTower : MonoBehaviour
+namespace tower
 {
-   private void OnTriggerEnter2D(Collider2D other)
+   public class UpGradeTower : MonoBehaviour
    {
-      if (other.CompareTag("Player"))
+      public int UpgradeType;
+
+      public Point point;
+      private void Start()
       {
+         EventCenter.GetInstance().AddEventListener("GameManagerInit",Init);   
          
       }
+
+      private void Init()
+      {
+         Vector3Int pointPos = VTool.ToPointPos(transform.position);
+         if (!GameManager.Instance.HadThisPoint(pointPos))
+            return;
+         point = GameManager.Instance.GetPointByPos(pointPos);
+         transform.position = point.CenterPos;
+      }
+
+      
+      
+      
+      
+      private void OnDestroy()
+      {
+         EventCenter.GetInstance().RemoveEventListener("GameManagerInit", Init);
+      }
+      
    }
+   
+   
+
 }

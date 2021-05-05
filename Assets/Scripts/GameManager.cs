@@ -1,50 +1,61 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tower;
+using System.Linq;
+using tower;
+using ui;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public Transform uiCanvas;
+    public string chooseTowers;
+    
+    
 
-    public List<int> choosedTowerId = new List<int>();
+    private GameState _gameState;
+    public GameState gameState => _gameState;
+    
+    
+    [HideInInspector]
+    public List<TowerType> choosedTowerList;
 
-    private Dictionary<TowerType, GameObject> towerDic;
-    private Dictionary<Vector3Int, Point> pointDic;
+    private Dictionary<TowerType, GameObject> chooseUiDic;
+    private Dictionary<TowerType, GameObject> upgradeUiDic;
+    
+    private Dictionary<Vector3Int, Point> pointDic = new Dictionary<Vector3Int, Point>();
+    
     
     private void Start()
     {
-        pointDic = new Dictionary<Vector3Int, Point>();
-        StartCoroutine(LoadAllTowerObj());
-    }
-
-    private IEnumerator LoadAllTowerObj()
-    {
-        towerDic = new Dictionary<TowerType, GameObject>();
-        ResourceRequest rr;
+        uiCanvas.gameObject.AddComponent<UiManager>();
+        gameObject.AddComponent<AssestMgr>();
+        SeparateStrToTowerType();
         
-        for (int i = 0; i < choosedTowerId.Count; i++)
+    }
+
+    private void SeparateStrToTowerType()
+    {
+        choosedTowerList = new List<TowerType>();
+        string[] strs = chooseTowers.Split(',');
+        for (int i = 0; i < strs.Length; i++)
         {
-            TowerType towerType = (TowerType) choosedTowerId[i];
-            rr = Resources.LoadAsync<GameObject>("Tower/" + towerType.ToString() + "Tower");
-            yield return rr;
-            towerDic.Add(towerType,rr.asset as GameObject);
+            if (int.TryParse(strs[i], out int type))
+            {
+                TowerType towerType = (TowerType) type;
+                if(choosedTowerList.Contains(towerType))
+                    continue;
+                choosedTowerList.Add(towerType);
+            }
         }
+        AssestMgr.Instance.Init(choosedTowerList);
     }
 
-    public GameObject GetTowerByType(TowerType towerType)
+    public void Init()
     {
-        if (!towerDic.ContainsKey(towerType))
-            return null;
-
-        return towerDic[towerType];
+        EventCenter.GetInstance().EventTrigger("GameManagerInit");     
+        UiManager.Instance.Init();
     }
-    
-    public bool HadThisTowerType(TowerType towerType)
-    {
-        return towerDic.ContainsKey(towerType);
-    }
-    
     
     public Point GetPointByPos(Vector3Int pos)
     {
@@ -52,6 +63,15 @@ public class GameManager : Singleton<GameManager>
             return null;
 
         return pointDic[pos];
+    }
+    
+    public Point GetPointByPos(Vector3 pos)
+    {
+        Vector3Int pointPos = VTool.ToPointPos(pos);
+        if (!pointDic.ContainsKey(pointPos))
+            return null;
+
+        return pointDic[pointPos];
     }
     
     public bool HadThisPoint(Vector3Int pos)
@@ -63,5 +83,9 @@ public class GameManager : Singleton<GameManager>
     {
         pointDic.Add(point.Pos,point);
     }
-    
+
+    public void ChangeGameState(GameState gameState)
+    {
+        _gameState = gameState;
+    }
 }

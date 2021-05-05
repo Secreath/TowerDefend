@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tower;
-using UI;
+using tower;
+using ui;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -64,13 +64,13 @@ namespace mapThing
             }
         }
         
-        private void OnMouseOver()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                UiManager.Instance.ShowTowerUi(GetMousePos.GetMousePosition());
-            }
-        }
+//        private void OnMouseOver()
+//        {
+//            if (Input.GetMouseButtonDown(0))
+//            {
+//                UiManager.Instance.ShowTowerUi(GetMousePos.GetMousePosition());
+//            }
+//        }
         
         private void PlaceTile(TileType tileType,Vector3Int pos)
         {
