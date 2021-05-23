@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using level;
 using tower;
 using ui;
 using UnityEngine;
@@ -9,8 +11,7 @@ public class AssestMgr : Singleton<AssestMgr>
     private Dictionary<TowerType, Tower> towerDic;
     private Dictionary<TowerType, GameObject> towerBaseObjDic;
     private Dictionary<TowerType, GameObject> chooseUiDic;
-    private Dictionary<TowerType, List<List<GameObject>>> upgradeUiDic;
-    private GameObject upgradeBtn;
+    private Dictionary<int, LevelMsg> levelMsgDic;
     
     private int LoadCount;
     private int curLoad;
@@ -24,21 +25,43 @@ public class AssestMgr : Singleton<AssestMgr>
 
     public bool LoadComplete => loadComplete;
     
-    public void Init(List<TowerType> choosedTowerList)
+    public void Init(int level)
     {
+        towerDic = new Dictionary<TowerType, Tower>();
+        towerBaseObjDic = new Dictionary<TowerType, GameObject>();
+        chooseUiDic = new Dictionary<TowerType, GameObject>();
+        levelMsgDic = new Dictionary<int, LevelMsg>();
+        
         int typeCount =(int)TowerType.End;
         curLoad = 0;
-        LoadCount = typeCount * ((int)UiType.End + 2); 
+        LoadCount = typeCount * ((int)UiType.End + 2);
+
+        LoadLevelRes(level);
+    }
+
+    public void LoadLevelRes(int level)
+    {
+        List<TowerType> choosedTowerList = new List<TowerType>();
+        string[] strs = LoadLevelMsg(level).chooseTowers.Split(',');
+        for (int i = 0; i < strs.Length; i++)
+        {
+            if (int.TryParse(strs[i], out int type))
+            {
+                TowerType towerType = (TowerType) type;
+                if(choosedTowerList.Contains(towerType) 
+                   || towerType == TowerType.UpGrade || towerType == TowerType.End)
+                    continue;
+                choosedTowerList.Add(towerType);
+            }
+        }
+        
         StartCoroutine(LoadAllTowerObj(choosedTowerList));
     }
+    
     
     private IEnumerator LoadAllTowerObj(List<TowerType> choosedTowerList)
     {
         loadComplete = false;
-        towerDic = new Dictionary<TowerType, Tower>();
-        towerBaseObjDic = new Dictionary<TowerType, GameObject>();
-        chooseUiDic = new Dictionary<TowerType, GameObject>();
-        upgradeUiDic = new Dictionary<TowerType, List<List<GameObject>>>();
         ResourceRequest rr;
         
         for (int i = 0; i < choosedTowerList.Count; i++)
@@ -91,10 +114,22 @@ public class AssestMgr : Singleton<AssestMgr>
 //            for(tower.tower)
 //        }
 //    }
-    
+
+    public LevelMsg LoadLevelMsg(int level)
+    {
+        if (levelMsgDic.ContainsKey(level))
+            return levelMsgDic[level];
+        
+        LevelMsg ls = Resources.Load<LevelMsg>("ScriptableObject/Level/LevelSpawn" + level.ToString());
+
+        if(ls == null)
+            throw new NullReferenceException($"本地未包含 LevelSpawn{level}");
+        levelMsgDic.Add(level,ls);
+        return ls;
+    }
     private int SetTowerLevel(TowerMsg tower,int curLevel)
     {
-        if (tower == null)
+        if (tower.nextLevelTower == null)
             return curLevel;
         tower.curLevel = curLevel;
         int maxLevel = 0;
@@ -127,12 +162,5 @@ public class AssestMgr : Singleton<AssestMgr>
             return chooseUiDic[type];
         return null;
     }
-    
-//    public GameObject GetUpgradeUiObj(TowerType type)
-//    {
-//        if (upgradeUiDic.ContainsKey(type))
-//            return upgradeUiDic[type];
-//        return null;
-//    }
-    
+
 }

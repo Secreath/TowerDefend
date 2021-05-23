@@ -1,39 +1,68 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
+using plugin.ugui.view;
+using ui;
 using UnityEngine;
 
 namespace tower
 {
-   public class UpGradeTower : MonoBehaviour
+   public class UpGradeTower : BaseTower
    {
-      public int UpgradeType;
+      public UpgradeType Type;
 
-      public Point point;
-      private void Start()
+      
+      private TimeCountDown timeCountDown;
+      
+      private BaseTower buildTower;
+      public BaseTower BuildTower => buildTower;
+      public void Start()
       {
-         EventCenter.GetInstance().AddEventListener("GameManagerInit",Init);   
+         EventCenter.GetInstance().AddEventListener("GameManagerInit",InitUpgrade); 
+      }
+
+      private void InitUpgrade()
+      {
+         Point point = CurPoint;
+         transform.position = point.CenterPos;
+         point.SetTower(this);
+         GetTimer();
+      }
+
+      public void PrepareUpgreade(BaseTower pickTower)
+      {
+         buildTower = pickTower;
+         UiManager.Instance.ShowUpgradeUi(this,CurPoint);
          
       }
 
-      private void Init()
+      public void UpGrade()
       {
-         Vector3Int pointPos = VTool.ToPointPos(transform.position);
-         if (!GameManager.Instance.HadThisPoint(pointPos))
-            return;
-         point = GameManager.Instance.GetPointByPos(pointPos);
-         transform.position = point.CenterPos;
+         Debug.Log("UpGrade");
+         state = TowerState.Upgrading;
+         buildTower.OnBuilding();
+         timeCountDown.SetRefreshTime(10,BuildOver);
       }
-
       
+      private void BuildOver()
+      {
+         Debug.Log("BuildOver");
+         state = TowerState.Idle;
+         buildTower.OnBuildOver();
+         buildTower = default;
+      }
       
-      
+      public void GetTimer()
+      {
+         UiManager.Instance.CreateTimer(ref timeCountDown,CurPoint);
+      }
       
       private void OnDestroy()
       {
-         EventCenter.GetInstance().RemoveEventListener("GameManagerInit", Init);
+         EventCenter.GetInstance().RemoveEventListener("GameManagerInit", InitUpgrade);
       }
-      
+
    }
    
    

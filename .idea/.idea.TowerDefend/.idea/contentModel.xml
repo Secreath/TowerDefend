@@ -25,6 +25,9 @@
         </e>
         <e p="Resources" t="Include">
           <e p="Level.txt" t="Include" />
+          <e p="Path" t="Include">
+            <e p="path1.txt" t="Include" />
+          </e>
         </e>
         <e p="Scripts" t="Include">
           <e p="AssestMgr.cs" t="Include" />
@@ -38,6 +41,10 @@
           </e>
           <e p="CameraMovement.cs" t="Include" />
           <e p="CharacterUiMgr.cs" t="Include" />
+          <e p="EditorGame" t="Include">
+            <e p="EditorModel.cs" t="Include" />
+            <e p="TDRoad.cs" t="Include" />
+          </e>
           <e p="Enemy" t="Include">
             <e p="BaseEnemy.cs" t="Include" />
             <e p="BaseEnemyAnimStateMgr.cs" t="Include" />
@@ -56,10 +63,14 @@
           <e p="Item" t="Include">
             <e p="Stone.cs" t="Include" />
           </e>
-          <e p="LevelManager.cs" t="Include" />
+          <e p="Level" t="Include">
+            <e p="LevelMgr.cs" t="Include" />
+            <e p="LevelMsg.cs" t="Include" />
+          </e>
           <e p="Map.cs" t="Include" />
           <e p="Other" t="Include">
             <e p="Curve.cs" t="Include" />
+            <e p="TimeCountDown.cs" t="Include" />
             <e p="Tools.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
@@ -99,9 +110,6 @@
               <e p="LoginPenal.cs" t="Include" />
               <e p="UIMgr.cs" t="Include" />
             </e>
-          </e>
-          <e p="Road" t="Include">
-            <e p="TDRoad.cs" t="Include" />
           </e>
           <e p="Singleton.cs" t="Include" />
           <e p="SomeEnum.cs" t="Include" />

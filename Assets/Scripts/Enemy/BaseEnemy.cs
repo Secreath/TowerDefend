@@ -7,17 +7,20 @@ using UnityEngine;
 
 public class BaseEnemy : BaseProperty,ITakeDamage
 {
+    public Point CurPoint => GameManager.GetPointByPos(transform.position);
     
     public int RoadId;
     protected BoxCollider2D box;
     protected BaseEnemyAnimStateMgr animStateMgr;
     
-    protected Queue<Transform> pathQueue = new Queue<Transform>();
+    protected Queue<Point> pathQueue = new Queue<Point>();
     
 
-    protected Transform target;
-    protected Transform wayPoint;
-    protected Transform enemyTarget;
+    protected Point target;
+    protected Point wayPoint;
+
+    protected bool start;
+    //protected Point enemyTarget;
     
     protected override void Start()
     {
@@ -26,19 +29,27 @@ public class BaseEnemy : BaseProperty,ITakeDamage
         box = GetComponent<BoxCollider2D>();
         animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
 
+        EventCenter.GetInstance().AddEventListener("GameManagerInit",Init); 
         
-        pathQueue = new Queue<Transform>(TDRoad.GetPathList(RoadId));
+    }
+
+    public void Init()
+    {
+        pathQueue = new Queue<Point>(GameManager.GetPointList(RoadId));
+        
         if (pathQueue == null || pathQueue.Count == 0)
         {
             Destroy(gameObject);
             return;
         }
-        transform.position = pathQueue.Dequeue().position;
+        Debug.Log(pathQueue.Count);
+        transform.position = pathQueue.Dequeue().CenterPos;
         wayPoint = pathQueue.Dequeue();
         target = wayPoint;
+        start = true;
     }
     
-
+    
     protected virtual void Arrived()
     {
         animStateMgr.ChangeState(EnemyState.Dead);
@@ -54,7 +65,7 @@ public class BaseEnemy : BaseProperty,ITakeDamage
 
     public virtual void FaceToTarget()
     {
-        if (transform.position.x - target.position.x > 0)
+        if (transform.position.x - target.CenterPos.x > 0)
             transform.localScale = new Vector3(-1,1,1);
         else
             transform.localScale = Vector3.one;

@@ -31,7 +31,7 @@ public class InPutMgr : BaseManager<InPutMgr>
     private void GetAxis()
     {  
         Vector2 move = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
-        if(GameManager.Instance.gameState == GameState.OpenUi)
+        if(GameManager.gameState == GameState.OpenUi)
             move = Vector2.zero;
         EventCenter.GetInstance().EventTrigger("MoveInput", move);
     }

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using level;
+using mapThing;
 using tower;
 using ui;
 using UnityEngine;
@@ -9,69 +11,110 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public Transform uiCanvas;
-    public string chooseTowers;
     
     
 
     private GameState _gameState;
-    public GameState gameState => _gameState;
-    
+    public static GameState gameState => Instance._gameState;
+
+    private int curLevelIndex;
+    public int CurLevelIndex => curLevelIndex;
     
     [HideInInspector]
     public List<TowerType> choosedTowerList;
 
+    public static Dictionary<TowerType, TileType> TypeDic;
+    
     private Dictionary<TowerType, GameObject> chooseUiDic;
     private Dictionary<TowerType, GameObject> upgradeUiDic;
     
     private Dictionary<Vector3Int, Point> pointDic = new Dictionary<Vector3Int, Point>();
-    
+    public static Dictionary<int, List<Point>> PointsDic;
+
+    public static List<Point> startPoints;
+    public static List<Point> finishPoints;
     
     private void Start()
     {
         uiCanvas.gameObject.AddComponent<UiManager>();
         gameObject.AddComponent<AssestMgr>();
-        SeparateStrToTowerType();
+        
+        
+    }
+    
+    public void Init()
+    {
+        InitPointLine();
+        InitTypeDic();
+        InitStartAndFinishPoints();
+        
+        EventCenter.GetInstance().EventTrigger("GameManagerInit");     
+        UiManager.Instance.Init();
         
     }
 
-    private void SeparateStrToTowerType()
+    public void InitStartAndFinishPoints()
     {
-        choosedTowerList = new List<TowerType>();
-        string[] strs = chooseTowers.Split(',');
-        for (int i = 0; i < strs.Length; i++)
+        startPoints = new List<Point>();
+        finishPoints = new List<Point>();
+
+        List<Transform> startTrans = TDRoad.Instance.startTrans;
+        List<Transform> finishTrans = TDRoad.Instance.finishTrans;
+        
+        for (int i = 0; i < startTrans.Count; i++)
         {
-            if (int.TryParse(strs[i], out int type))
-            {
-                TowerType towerType = (TowerType) type;
-                if(choosedTowerList.Contains(towerType))
-                    continue;
-                choosedTowerList.Add(towerType);
-            }
+            startPoints.Add(GetPointByPos(startTrans[i].position));
         }
-        AssestMgr.Instance.Init(choosedTowerList);
+        
+        for (int i = 0; i < finishTrans.Count; i++)
+        {
+            finishPoints.Add(GetPointByPos(finishTrans[i].position));
+        }
+    }
+    public void InitPointLine()
+    {
+        PointsDic = new Dictionary<int, List<Point>>();
+        for (int j = 0; j < TDRoad.Instance.pathLines.Count; j++)
+        {
+            List<Point> pointList = new List<Point>();
+            List<Transform> posList = TDRoad.GetPathList(j);
+            
+            for (int i = 0; i < posList.Count; i++)
+            {
+                pointList.Add(GetPointByPos(posList[i].position));
+            }
+            PointsDic.Add(j,pointList);
+        }
     }
 
-    public void Init()
+    public void InitTypeDic()
     {
-        EventCenter.GetInstance().EventTrigger("GameManagerInit");     
-        UiManager.Instance.Init();
+        TypeDic = new Dictionary<TowerType, TileType>();
+        for (int i = 0; i < choosedTowerList.Count; i++)
+        {
+            TypeDic.Add(choosedTowerList[i],AssestMgr.Instance.GetTower(choosedTowerList[i]).tileType);
+        }
     }
     
-    public Point GetPointByPos(Vector3Int pos)
+    public static List<Point> GetPointList(int roadID)
     {
-        if (!pointDic.ContainsKey(pos))
+        if(PointsDic.ContainsKey(roadID))
+            return PointsDic[roadID];
+        return new List<Point>();
+    }
+    
+    public static Point GetPointByPos(Vector3Int pos)
+    {
+        if (!Instance.pointDic.ContainsKey(pos))
             return null;
 
-        return pointDic[pos];
+        return Instance.pointDic[pos];
     }
     
-    public Point GetPointByPos(Vector3 pos)
+    public static Point GetPointByPos(Vector3 pos)
     {
         Vector3Int pointPos = VTool.ToPointPos(pos);
-        if (!pointDic.ContainsKey(pointPos))
-            return null;
-
-        return pointDic[pointPos];
+        return GetPointByPos(pointPos);
     }
     
     public bool HadThisPoint(Vector3Int pos)
@@ -84,8 +127,23 @@ public class GameManager : Singleton<GameManager>
         pointDic.Add(point.Pos,point);
     }
 
-    public void ChangeGameState(GameState gameState)
+    public static void ChangeGameState(GameState gameState)
     {
-        _gameState = gameState;
+        Instance._gameState = gameState;
+    }
+
+    public static JState GetJState(Point point)
+    {
+        
+        if (point.HadTower && gameState != GameState.PickTower && point.type != TowerType.UpGrade)
+        {
+            return JState.PickUp;
+        }
+        else if (gameState == GameState.PickTower && (!point.HadTower || (point.HadTower && point.type == TowerType.UpGrade)))
+        {
+            return JState.PutDown;
+        }
+
+        return JState.ControllUi;
     }
 }

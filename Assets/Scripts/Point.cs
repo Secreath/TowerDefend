@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using mapThing;
 using tower;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 
 
 public class Point
@@ -21,6 +23,8 @@ public class Point
         get{ return new Vector3(X + 0.5f,Y + 0.5f);}
     }
 
+    public TileType tileType => tile.TileType;
+    
     public TowerType type
     {
         get
@@ -28,30 +32,23 @@ public class Point
             if (baseTower == null)
                 return TowerType.End;
 
-            return baseTower.tower.type;
+            return baseTower.type;
         }
     }
 
-    public bool HadTower;
+    public bool HadTower => baseTower != default;
     
     private BaseTile tile;
-    public BaseTile Tile
-    {
-        get { return tile; }
-    }
+    public BaseTile Tile => tile;
 
     private BaseTower baseTower;
 
-    public BaseTower BaseTower
-    {
-        get { return baseTower; }
-    }
+    public BaseTower BaseTower => baseTower;
     
     public Point(int x, int y)
     {
         this.X = x;
         this.Y = y;
-        HadTower = false;
         tile = default;
         baseTower = default;
         GameManager.Instance.AddTileDic(this);
@@ -61,16 +58,22 @@ public class Point
     {
         this.tile = tile;
     }
-
+    
     public void SetTower(BaseTower tower)
     {
-        HadTower = true;
-        this.baseTower = tower;
+        if (tileType == tower.requireTile)
+        {
+            this.baseTower = tower;
+            tower.Init();
+        }
+        else
+        {
+            Debug.Log("TileTypeError");
+        }
     }
 
     public void RemoveTower()
     {
-        HadTower = false;
         this.baseTower = default;
     }
     

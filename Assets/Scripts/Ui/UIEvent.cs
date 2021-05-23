@@ -14,10 +14,10 @@ namespace ui
         private RectTransform settingPanel;
         private RectTransform upGradeTowerPanel;
         private RectTransform playerMsgPanel;
-        
+        private GameObject upgradeBtn;
         private List<TowerType> chooseTypes;
         private Dictionary<TowerType, GameObject> upgradeUiDic;
-        
+        private UpGradeTower curTower;
         
         public void Init()
         {
@@ -27,7 +27,7 @@ namespace ui
             settingPanel = transform.Find("Setting") as RectTransform;
             upGradeTowerPanel = transform.Find("UpGradeTower") as RectTransform;
             playerMsgPanel = transform.Find("PlayerMsg") as RectTransform;
-
+            upgradeBtn = transform.Find("UpgradeBtn").gameObject;
             InitChooseTowerPanel();
 //            InitUpGradePanel();
         }
@@ -91,41 +91,60 @@ namespace ui
 //        }
         
         
-        public void ChickChoose(int index)
+        public void ClickChoose(int index)
         {
             TowerType type = chooseTypes[index];
+
+            if (GameManager.TypeDic[type] != UiManager.curPoint.tileType)
+            {
+                return;
+            }
+            
+            Debug.Log(type);
             upGradeTowerPanel.anchoredPosition = chooseTowerPanel.anchoredPosition;
             
 
             GameObject tower = Instantiate(AssestMgr.Instance.GetTowerBaseObj(type));
             BaseTower baseTower = tower.GetComponent<BaseTower>();
-
+            Debug.Log(baseTower.CurTower.nextLevelTower.Length);
             tower.SetActive(true);
-            tower.transform.position = UiManager.Instance.curPoint.CenterPos;
-            tower.GetComponent<SpriteRenderer>().sortingOrder = UiManager.Instance.curPoint.Y;
+            tower.transform.position = UiManager.curPoint.CenterPos;
+            tower.GetComponent<SpriteRenderer>().sortingOrder = UiManager.curPoint.Y;
             
-            UiManager.Instance.curPoint.SetTower(baseTower);
+            UiManager.curPoint.SetTower(baseTower);
 
         }
 
-        public void ShowUpgradeBtn(BaseTower tower)
+        public bool CheckUpgrade(int index)
+        {
+            return curTower.BuildTower.CheckCanUpGrade(index);
+        }
+        public void ClickUpGrade()
+        {
+           curTower.UpGrade();
+        }
+        
+
+        public void ShowUpgradeBtn(UpGradeTower upGradeTower)
         {
             for(int i=0; i<upGradeTowerPanel.childCount ; i++)
                 DestroyImmediate(upGradeTowerPanel.GetChild(i).gameObject);
 
-                        
-            for (int i = 0; i<tower.curTower.nextLevelTower.Length; i++)
-            {
-                
-            }
-        } 
-
-        public void SetUpGredeUi(Tower tower)
-        {
+            curTower = upGradeTower;
+            BaseTower tower = upGradeTower.BuildTower;
+            List<GameObject> upgradeList = SetCirclePanel(upGradeTowerPanel, upgradeBtn, tower.CurTower.nextLevelTower.Length);
             
-            for (int i = 0; i < upGradeTowerPanel.childCount; i++)
+            Debug.Log("nextLevelTower " + tower.CurTower.nextLevelTower.Length);
+            for (int i = 0; i<tower.CurTower.nextLevelTower.Length; i++)
             {
+                upgradeList[i].transform.Find("Image").GetComponent<Image>().sprite =
+                    tower.CurTower.nextLevelTower[i].towerSprite;
                 
+                upgradeList[i].transform.Find("CoinText").GetComponent<Text>().text =
+                    tower.CurTower.nextLevelTower[i].buildPrice.ToString();
+                
+                upgradeList[i].transform.Find("TimeText").GetComponent<Text>().text =
+                    tower.CurTower.nextLevelTower[i].buildTime.ToString();
             }
         } 
         
@@ -142,16 +161,17 @@ namespace ui
             rect.anchoredPosition = pos;
         }
         
-        public List<GameObject> SetCirclePanel(RectTransform parent,GameObject orig,List<Sprite> spriteList, float startAngle = 58.12f)
+        public List<GameObject> SetCirclePanel(RectTransform parent,GameObject orig,int count)
         {
             List<GameObject> objList = new List<GameObject>();
 
-            if (spriteList.Count == 1)
+            float startAngle = count > 2 ? 58.12f : 0;
+            
+            if (count == 1)
             {
                 GameObject obj = Instantiate(orig);
-                obj.GetComponent<Image>().sprite = spriteList[0];
                 RectTransform rect = obj.transform as RectTransform;
-                rect.SetParent(chooseTowerPanel, false);
+                rect.SetParent(parent, false);
                 rect.gameObject.SetActive(true);
                 rect.anchoredPosition = Vector2.zero;
                 objList.Add(obj);
@@ -159,16 +179,15 @@ namespace ui
             }
             
             float radius = 50;
-            float deltaTheta = (2f * Mathf.PI) / spriteList.Count;
+            float deltaTheta = (2f * Mathf.PI) / count;
             float theta = startAngle; //当前角度
             
-            for (int i = 0; i < spriteList.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                Vector2 pos = parent.anchoredPosition +
-                              new Vector2(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta));
+                Vector3 pos = parent.position +
+                              new Vector3(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta),0f);
                 theta = deltaTheta + theta;
                 GameObject obj = Instantiate(orig);
-                obj.GetComponent<Image>().sprite = spriteList[i];
                 RectTransform rect = obj.transform as RectTransform;
                 rect.SetParent(parent, false);
                 rect.gameObject.SetActive(true);

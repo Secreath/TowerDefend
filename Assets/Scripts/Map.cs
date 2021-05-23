@@ -23,8 +23,13 @@ namespace mapThing
         {
             background = transform.Find("background").GetComponent<Tilemap>();
             road = transform.Find("road").GetComponent<Tilemap>();
+        }
+
+        public void Init(int curLevelIndex)
+        {
             GetPathList();
             GetBgList();
+            AssestMgr.Instance.Init(curLevelIndex);
         }
         
         private void GetPathList()

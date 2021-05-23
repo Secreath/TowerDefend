@@ -13,16 +13,21 @@ MonoBehaviour:
   m_Name: shootTower
   m_EditorClassIdentifier: 
   type: 1
-  tower:
-    atk: 2
-    buildPrice: 200
+  towerMsg:
+    atk: 0
+    buildPrice: 100
+    buildTime: 5
     towerSprite: {fileID: 0}
-    upgradeType:
-    - atk: 3
-      buildPrice: 400
-      towerSprite: {fileID: 0}
-      upgradeType: []
-    - atk: 4
-      buildPrice: 600
-      towerSprite: {fileID: 0}
-      upgradeType: []
+    nextLevelTower:
+    - atk: 5
+      buildPrice: 100
+      buildTime: 5
+      towerSprite: {fileID: 2181564322307129396, guid: 0df130dba097d43a79de3bebbd122bd1,
+        type: 3}
+      nextLevelTower: []
+    - atk: 6
+      buildPrice: 120
+      buildTime: 6
+      towerSprite: {fileID: -8119897763881895249, guid: 0df130dba097d43a79de3bebbd122bd1,
+        type: 3}
+      nextLevelTower: []

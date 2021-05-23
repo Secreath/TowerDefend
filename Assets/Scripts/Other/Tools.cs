@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FindObjectFromTag
 {
@@ -349,6 +351,19 @@ public class UiTool
 //        
 //        sprite.color = ColorTool.ChangeAlpha(color, maxAlpha);
 //    }
+
+    public static Vector2 GetTowerUiPos(Transform transform,Camera UiCamera, Point point)
+    {
+        //使用场景相机将世界坐标转换为屏幕坐标
+        Vector2 screenUiPos = UiCamera.WorldToScreenPoint(point.CenterPos);
+            
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            transform as RectTransform, 
+            screenUiPos,
+            UiCamera, 
+            out Vector2 retPos);
+        return retPos;
+    }
 }
 public class Swap
 {
@@ -416,3 +431,116 @@ public class ColorTool
     }
    
 }
+
+public class TimeTool
+    {
+        public static void LongToTime(long num,out int days,out int hours,out int mins,out int seconds)
+        {
+            int time = (int)num;
+            days = hours = mins = seconds = 0;
+            days = time / 86400;
+            time = time - 86400 * days;
+            hours = time / 3600;
+            time = time - 3600 * hours;
+            mins = time / 60;
+            time = time - 60 * mins;
+            seconds = time;
+        }
+        
+        
+        public static void MsToMS(int totleMs,out int mins,out int seconds,out int ms)
+        {
+            mins = seconds = ms = 0;
+
+            seconds = totleMs / 1000;
+            mins = seconds / 60;
+            ms = totleMs - seconds * 1000;
+        }
+        
+        public static long RefreshTime(int updateTime = 5)
+        {
+            updateTime = updateTime % 24;
+            
+            DateTime checkDateTime = DateTime.Today.AddHours(updateTime);
+            long time = (long)(checkDateTime - DateTime.Now).TotalSeconds;
+            
+            //今天5点之后
+            if(time < 0)
+            {
+                //明天5点
+                checkDateTime = DateTime.Today.AddHours(24 + updateTime);
+                time = (long)(checkDateTime - DateTime.Now).TotalSeconds;
+            }
+            return time;
+        }
+        
+        public static string ToTimeStr(long timetext)
+        {
+            LongToTime(timetext, out int days, out int hours, out int mins, out int seconds);
+            
+            if (days > 0)
+            {
+                return string.Format("{0:D2}{1} {2:D2}{3}", days,"d", hours, "h");
+            }
+            if (hours > 0)
+            {
+                return string.Format("{0:D2}{1} {2:D2}{3}", hours,"d", mins, "m");
+            }
+            if (mins > 0)
+            {
+                return string.Format("{0:D2}{1} {2:D2}{3}", mins,"m", seconds, "s");
+            }
+            return string.Format("{0:D2}{1}", seconds, "s");
+        }
+        
+        public static string ToTimeStrSimple(long timetext)
+        {
+            LongToTime(timetext, out int days, out int hours, out int mins, out int seconds);
+            
+            if (days > 0)
+            {
+                return string.Format("{0:D2}:{1:D2}", days, hours);
+            }
+            if (hours > 0)
+            {
+                return string.Format("{0:D2}:{1:D2}", hours,mins);
+            }
+            if (mins > 0)
+            {
+                return string.Format("{0:D2}:{1:D2}", mins,seconds);
+            }
+            return string.Format("{0:D2}{1}", seconds, "s");
+        }
+        
+        public static string MsToTimeStrSimple(int totleMs)
+        {
+            MsToMS(totleMs,  out int mins, out int seconds,out int ms);
+            
+            if (mins > 0)
+            {
+                return string.Format("{0:D2}:{1:D2}",mins,seconds);
+            }
+            if (seconds > 0)
+            {
+                return string.Format("{0:D2}:{1:D2}", seconds,ms/10);
+            }
+            return string.Format("{0:D2}{1}", ms/10, "ms");
+        }
+        
+        public static string MsToTimeStr(int totleMs)
+        {
+            MsToMS(totleMs,  out int mins, out int seconds,out int ms);
+            
+            if (mins > 0)
+            {
+                return string.Format("{0:D2}{1}:{2:D2}{3}", mins,"m", seconds, "s");
+            }
+            if (seconds > 0)
+            {
+                return string.Format("{0:D2}{1}:{2:D2}{3}", seconds,"s", ms/10, "ms");
+            }
+            return string.Format("{0:D2}{1}", ms/10, "ms");
+        }
+        
+}
+

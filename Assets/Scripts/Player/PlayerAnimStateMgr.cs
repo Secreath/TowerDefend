@@ -6,26 +6,18 @@ using UnityEngine;
 
 namespace Player
 {
-    public  class PlayerAnimStateMgr : MonoBehaviour
+    public  class PlayerAnimStateMgr : Singleton<PlayerAnimStateMgr>
     {
-        public static PlayerAnimStateMgr Instance;
-        static private PlayerState _playerState;
+        private static PlayerState _playerState;
         private PlayerState _lastState;
         private Animator _anim;
         
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-            DontDestroyOnLoad(gameObject);
-        }
+        public static PlayerState CurState => _playerState;
         
         
         void Start()
         {
-            Instance = this;
+        
             _anim = GetComponent<Animator>();
         }
 
@@ -76,10 +68,6 @@ namespace Player
         {
             _anim.SetBool("isWalk", false );
         }
-
-        public static PlayerState CurState()
-        {
-            return _playerState;
-        }
+  
     }
 }

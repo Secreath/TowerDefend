@@ -10,12 +10,14 @@ namespace ui
         public GameObject button;
 
         public float radius;
-        public float startAngle = 58.12f;
-
+        public int count;
+        private float startAngle = 58.12f;
         private List<GameObject> buttons;
 
-        public void InitCircle(int count)
+        public void Start()
         {
+            
+            startAngle = count > 2 ? 58.12f : 0;
             buttons = new List<GameObject>();
             
             float deltaTheta = (2f* Mathf.PI) / count;
@@ -39,17 +41,17 @@ namespace ui
         
 
 
-    //    private void UpdatePos()
-    //    {
-    //        float deltaTheta = (2f* Mathf.PI) / count;
-    //        float theta = startAngle; //当前角度
-    //        for (var i = 0; i < count; i++)
-    //        {
-    //            Vector3 pos = transform.position + new Vector3(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta), 0f);
-    //            buttons[i].transform.position = pos;
-    //            theta = deltaTheta + theta;
-    //        }
-    //    }
+    private void Update()
+    {
+        float deltaTheta = (2f* Mathf.PI) / count;
+        float theta = startAngle; //当前角度
+        for (var i = 0; i < count; i++)
+        {
+            Vector3 pos = transform.position + new Vector3(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta), 0f);
+            (buttons[i].transform as RectTransform).anchoredPosition = pos;
+            theta = deltaTheta + theta;
+        }
+    }
       
     }
     

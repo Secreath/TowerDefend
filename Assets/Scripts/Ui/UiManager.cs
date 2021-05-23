@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using mapThing;
+using plugin.ugui.view;
 using tower;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace ui
             get { return canvas.worldCamera; }
         }
         
-        internal Point curPoint;
+        internal static Point curPoint;
 
         private UIEvent uiEvent;
         private Canvas canvas;
@@ -29,7 +30,10 @@ namespace ui
 
         //height
         private List<Transform> childList;
-
+        //timeCount
+        private GameObject timer;
+        private Transform timerList;
+        private List<GameObject> timeCountList;
         private int _curChooseIndex;
         private int curChooseIndex
         {
@@ -52,16 +56,26 @@ namespace ui
         }
         private RectTransform hightLightRect;
 
-        public void Init()
+        public void Start()
         {
             canvas = GetComponent<Canvas>();
             
             UiStack = new Stack<GameObject>();
+            timeCountList = new List<GameObject>();
             chooseTowerPanel = transform.Find("ChooseTower") as RectTransform;
             settingPanel = transform.Find("Setting") as RectTransform;
             upGradeTowerPanel = transform.Find("UpGradeTower") as RectTransform;
             hightLightRect = transform.Find("HightLight") as RectTransform;
+            
+            timerList = transform.Find("TimerList");
+            timer = timerList.Find("TimeCount").gameObject;
             uiEvent = gameObject.AddComponent<UIEvent>();
+            
+            
+        }
+
+        public void Init()
+        {
             uiEvent.Init();
         }
         
@@ -75,13 +89,13 @@ namespace ui
                 {
                     hightLightRect.gameObject.SetActive(false);
                     uiState = UiState.Close;
-                    GameManager.Instance.ChangeGameState(GameState.PlayGame);
+                    GameManager.ChangeGameState(GameState.PlayGame);
                 }
                 return;
             }
             
             UiStack.Push(settingPanel.gameObject);
-            GameManager.Instance.ChangeGameState(GameState.OpenUi);
+            GameManager.ChangeGameState(GameState.OpenUi);
             settingPanel.gameObject.SetActive(true);
         }
 
@@ -93,7 +107,7 @@ namespace ui
             }
             hightLightRect.gameObject.SetActive(false);
             uiState = UiState.Close;
-            GameManager.Instance.ChangeGameState(GameState.PlayGame);
+            GameManager.ChangeGameState(GameState.PlayGame);
         }
         
         public void ShowTowerUi(Vector3 pos)
@@ -102,31 +116,41 @@ namespace ui
             if (!GameManager.Instance.HadThisPoint(pointPos))
                 return;
             
-            curPoint = GameManager.Instance.GetPointByPos(pointPos);
+            curPoint = GameManager.GetPointByPos(pointPos);
             
             if(curPoint.Tile.TileType ==TileType.road)
                 return;
             
             if (!curPoint.HadTower)
                 SetTowerUiPos(UiState.OpenChoosePanel, curPoint);
-            else
-                SetTowerUiPos(UiState.OpenUpGradePanel, curPoint);
+        }
 
+        public void ShowUpgradeUi(UpGradeTower baseTower,Point point)
+        {
+            curPoint = point;
+            uiEvent.ShowUpgradeBtn(baseTower);
+            GameManager.ChangeGameState(GameState.OpenUi);
+            SetTowerUiPos(UiState.OpenUpGradePanel, point);
         }
 
         public void SetTowerUiPos(UiState uiType,Point point)
         {
-            //使用场景相机将世界坐标转换为屏幕坐标
-            Vector2 screenUiPos = UiCamera.WorldToScreenPoint(point.CenterPos);
-            
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                transform as RectTransform, 
-                screenUiPos,
-                UiCamera, 
-                out Vector2 retPos);
-            OpenPanel(uiType,retPos);
+            OpenPanel(uiType,UiTool.GetTowerUiPos(transform,UiCamera,point));
         }
 
+//        public Vector2 GetTowerUiPos(Point point)
+//        {
+//            //使用场景相机将世界坐标转换为屏幕坐标
+//            Vector2 screenUiPos = UiCamera.WorldToScreenPoint(point.CenterPos);
+//            
+//            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+//                transform as RectTransform, 
+//                screenUiPos,
+//                UiCamera, 
+//                out Vector2 retPos);
+//            return retPos;
+//        }
+        
 //        public void UpdateUiStackHead(GameObject panel)
 //        {
 //            UiStack.Pop().SetActive(false);
@@ -175,7 +199,7 @@ namespace ui
 
         public void PreOrNext(bool next)
         {
-            if(GameManager.Instance.gameState != GameState.OpenUi)
+            if(GameManager.gameState != GameState.OpenUi)
                 return;
             
             hightLightRect.gameObject.SetActive(true);
@@ -190,24 +214,39 @@ namespace ui
 
         public void JKeyPress(Vector3 pos)
         {
-            GameManager.Instance.ChangeGameState(GameState.OpenUi);
+            GameManager.ChangeGameState(GameState.OpenUi);
             
+            Debug.Log("pressJ");
             switch (uiState)
             {
                 case UiState.Close:
                     ShowTowerUi(pos);
                     break;
                 case UiState.OpenChoosePanel:
-                    uiEvent.ChickChoose(curChooseIndex);
+                    uiEvent.ClickChoose(curChooseIndex);
                     EscAllUi();
                     break;
                 case UiState.OpenUpGradePanel:
+                    if (!uiEvent.CheckUpgrade(curChooseIndex))
+                        return;
+                    uiEvent.ClickUpGrade();
+                    EscAllUi();
                     break;
                 case UiState.OpenSettingPanel:
                     break;
             }
         }
-        
+
+        public void CreateTimer(ref TimeCountDown timeCountDown,Point point)
+        {
+            
+            GameObject newTimer = Instantiate(timer, timerList);
+            newTimer.SetActive(false);
+            (newTimer.transform as RectTransform).anchoredPosition = UiTool.GetTowerUiPos(transform,UiCamera,point);
+            newTimer.name = "TimerCount" + timeCountList.Count;
+            timeCountList.Add(newTimer);
+            timeCountDown = newTimer.GetComponent<TimeCountDown>();
+        }
     }
     
 

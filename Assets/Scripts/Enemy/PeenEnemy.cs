@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Enemy
 {
     
-    
     public class PeenEnemy : BaseEnemy
     {
         public float attackRadius;
         public float checkRadius;
 
         private Vector2 checkPoint;
+        
 
         protected override void Start()
         {
@@ -26,6 +26,8 @@ namespace Enemy
      
         private void FixedUpdate()
         {
+            if(!start)
+                return;
             CheckAround();
             FaceToTarget();
         }
@@ -37,7 +39,7 @@ namespace Enemy
             
             if (enemyCircle != null)
             {
-                target = enemyCircle.transform;
+                target = GameManager.GetPointByPos(enemyCircle.transform.position);
                 AttackModel(enemyCircle.transform);
             }
             else
@@ -50,9 +52,9 @@ namespace Enemy
 
         private void MoveToPoint()
         {
-            if (Vector2.Distance(transform.position, wayPoint.position) > 0.1f)
+            if (Vector2.Distance(transform.position, wayPoint.CenterPos) > 0.1f)
             {
-                Vector2 dir = (wayPoint.position - transform.position).normalized;
+                Vector2 dir = (wayPoint.CenterPos - transform.position).normalized;
                 transform.Translate(dir * curSpeed * Time.deltaTime,Space.World);
             }
             else
@@ -74,9 +76,9 @@ namespace Enemy
             animStateMgr.ChangeState(EnemyState.Walk);
             while (animStateMgr.CurState() == EnemyState.Walk)
             {
-                if (Vector2.Distance(transform.position, wayPoint.position) > 0.1f)
+                if (Vector2.Distance(transform.position, wayPoint.CenterPos) > 0.1f)
                 {
-                    Move(wayPoint.position);
+                    Move(wayPoint.CenterPos);
 //                    Vector2 dir = (wayPoint.position - transform.position).normalized;
 //                    transform.Translate(dir * curSpeed * Time.deltaTime,Space.World);
                 }
@@ -102,7 +104,7 @@ namespace Enemy
             if (animStateMgr.CurState() == EnemyState.Walk)
             {
                 Debug.Log("try wayPoint");
-                if (Vector2.Distance(wayPoint.position, enemy.position) <= checkRadius)
+                if (Vector2.Distance(wayPoint.CenterPos, enemy.position) <= checkRadius)
                 {
                     Debug.Log("UPDATE wayPoint");
                     wayPoint = pathQueue.Dequeue();

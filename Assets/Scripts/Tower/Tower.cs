@@ -1,4 +1,5 @@
 ﻿using System;
+using mapThing;
 using UnityEngine;
 
 namespace tower
@@ -6,7 +7,8 @@ namespace tower
     [CreateAssetMenu(fileName = "tower", menuName = "Tower", order = 1)]
     public class Tower : ScriptableObject
     {
-        public TowerType type;
+        public TowerType towerType;
+        public TileType tileType;
         public TowerMsg towerMsg;
         [NonSerialized]
         public int maxLevel;
@@ -17,6 +19,7 @@ namespace tower
     {
         public int atk;
         public int buildPrice;
+        public float buildTime;
         public Sprite towerSprite;
         public TowerMsg[] nextLevelTower;
         [NonSerialized]
