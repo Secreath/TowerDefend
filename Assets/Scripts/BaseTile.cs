@@ -11,7 +11,8 @@ namespace mapThing
     {
         road,
         Build,
-        BackGround
+        BackGround,
+        All
     }
     
     public class BaseTile

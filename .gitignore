@@ -61,7 +61,7 @@ sysinfo.txt
 *.unitypackage
 /Assets/GUI Kit Neon/
 /Assets/GUI Kit Neon.meta
-
+/Library/Artifacts
 
 # Crashlytics generated file
 crashlytics-build.properties

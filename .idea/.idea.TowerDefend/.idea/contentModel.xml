@@ -23,12 +23,6 @@
             </e>
           </e>
         </e>
-        <e p="Resources" t="Include">
-          <e p="Level.txt" t="Include" />
-          <e p="Path" t="Include">
-            <e p="path1.txt" t="Include" />
-          </e>
-        </e>
         <e p="Scripts" t="Include">
           <e p="AssestMgr.cs" t="Include" />
           <e p="BaseBullet.cs" t="Include" />
@@ -58,7 +52,8 @@
           <e p="GameManager.cs" t="Include" />
           <e p="HeGizmosCircle.cs" t="Include" />
           <e p="Helper" t="Include">
-            <e p="LittleWitch.cs" t="Include" />
+            <e p="FollowSoldier.cs" t="Include" />
+            <e p="Soilder.cs" t="Include" />
           </e>
           <e p="Item" t="Include">
             <e p="Stone.cs" t="Include" />
@@ -116,11 +111,11 @@
           <e p="SomeInterface.cs" t="Include" />
           <e p="Teammate.cs" t="Include" />
           <e p="Tower" t="Include">
-            <e p="BaseCons.cs" t="Include" />
+            <e p="BaseConstruct.cs" t="Include" />
             <e p="BaseTower.cs" t="Include" />
-            <e p="LittleWitchHouse.cs" t="Include" />
+            <e p="ShotTower.cs" t="Include" />
+            <e p="SoldierTower.cs" t="Include" />
             <e p="Tower.cs" t="Include" />
-            <e p="Tower1.cs" t="Include" />
             <e p="TowerRange.cs" t="Include" />
             <e p="UpGradeTower.cs" t="Include" />
           </e>

@@ -11,24 +11,19 @@ namespace mapThing
     
     public class Map : Singleton<Map>
     {
-        private Tilemap background;
+        private Tilemap build;
         private Tilemap road;
 
         private List<Vector3Int> pathList;
-        private List<Vector3Int> bgList;
+        private List<Vector3Int> buildList;
         
-        
-        
-        void Start()
-        {
-            background = transform.Find("background").GetComponent<Tilemap>();
-            road = transform.Find("road").GetComponent<Tilemap>();
-        }
 
         public void Init(int curLevelIndex)
         {
+            build = transform.Find("background").GetComponent<Tilemap>();
+            road = transform.Find("road").GetComponent<Tilemap>();
             GetPathList();
-            GetBgList();
+            GetBuildList();
             AssestMgr.Instance.Init(curLevelIndex);
         }
         
@@ -50,20 +45,20 @@ namespace mapThing
             }
         }
         
-        private void GetBgList()
+        private void GetBuildList()
         {
-            bgList = new List<Vector3Int>();
+            buildList = new List<Vector3Int>();
 
-            for (int i = background.origin.y; i < background.origin.y + background.size.y; i++)
+            for (int i = build.origin.y; i < build.origin.y + build.size.y; i++)
             {
-                for (int j = background.origin.x; j < background.origin.x + background.size.x; j++)
+                for (int j = build.origin.x; j < build.origin.x + build.size.x; j++)
                 {
                     Vector3Int pos = new Vector3Int(j,i,0);
                     
-                    if (background.HasTile(pos) && !pathList.Contains(pos))
+                    if (build.HasTile(pos) && !pathList.Contains(pos))
                     {
-                        PlaceTile(TileType.BackGround, pos);
-                        bgList.Add(pos);
+                        PlaceTile(TileType.Build, pos);
+                        buildList.Add(pos);
                     }
                 }
             }

@@ -7,7 +7,7 @@ namespace tower
 {
     public class TowerRange : MonoBehaviour
     {
-        private Tower1 tower;
+        private ShotTower tower;
 
         private SpriteRenderer sprite;
 
@@ -24,7 +24,7 @@ namespace tower
         {
             checkPos = transform.parent.position + transform.position;
             sprite = transform.GetComponent<SpriteRenderer>();
-            tower = transform.parent.GetComponent<Tower1>();
+            tower = transform.parent.GetComponent<ShotTower>();
             Debug.Log(checkPos);
         }
 

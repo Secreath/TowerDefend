@@ -9,6 +9,8 @@ public class BaseEnemy : BaseProperty,ITakeDamage
 {
     public Point CurPoint => GameManager.GetPointByPos(transform.position);
     
+    
+    public EnemyType type;
     public int RoadId;
     protected BoxCollider2D box;
     protected BaseEnemyAnimStateMgr animStateMgr;
@@ -29,8 +31,8 @@ public class BaseEnemy : BaseProperty,ITakeDamage
         box = GetComponent<BoxCollider2D>();
         animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
 
-        EventCenter.GetInstance().AddEventListener("GameManagerInit",Init); 
-        
+//        EventCenter.GetInstance().AddEventListener("GameStart",Init);
+        Init();
     }
 
     public void Init()

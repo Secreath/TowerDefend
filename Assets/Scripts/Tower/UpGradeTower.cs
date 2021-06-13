@@ -33,6 +33,11 @@ namespace tower
       public void PrepareUpgreade(BaseTower pickTower)
       {
          buildTower = pickTower;
+         if (buildTower.NextTower == null)
+         {
+            state = TowerState.UpgradComplete;
+            return;
+         }
          UiManager.Instance.ShowUpgradeUi(this,CurPoint);
          
       }
@@ -42,15 +47,26 @@ namespace tower
          Debug.Log("UpGrade");
          state = TowerState.Upgrading;
          buildTower.OnBuilding();
-         timeCountDown.SetRefreshTime(10,BuildOver);
+         float buildTime = buildTower.NextTower.buildTime;
+         timeCountDown.SetRefreshTime(buildTime,BuildOver);
       }
       
       private void BuildOver()
       {
          Debug.Log("BuildOver");
-         state = TowerState.Idle;
+         state = TowerState.UpgradComplete;
          buildTower.OnBuildOver();
+      }
+      
+      public override BaseTower PickTower(Transform player)
+      {
+         state = TowerState.Idle;
+         buildTower.transform.SetParent(player);
+         buildTower.transform.localPosition = Vector3.zero;
+         GameManager.ChangeGameState(GameState.PickTower);
+         BaseTower renturnTower = buildTower;
          buildTower = default;
+         return renturnTower;
       }
       
       public void GetTimer()

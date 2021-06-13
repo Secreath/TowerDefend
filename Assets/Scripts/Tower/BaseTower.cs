@@ -9,38 +9,60 @@ namespace tower
 {
     public class BaseTower : MonoBehaviour
     {
-        public TowerType type;
-        public TileType requireTile;
-        
-        [HideInInspector]
         public Tower tower;
-        protected TowerMsg curTower;
+        
+        public TowerType type => tower.towerType;
+        public TileType tileType => tower.tileType;
+        
+        
+        private TowerMsg curTower;
         public TowerMsg CurTower
         {
             get
             {
-                if (curTower == null)
-                    return tower.towerMsg;
                 return curTower;
             }
         }
+        
+        public TowerMsg NextTower
+        {
+            get
+            {
+                if (curTower.nextLevelTower.Length > index)
+                    return curTower.nextLevelTower[index];
+                return null;
+            }
+        }
+        
         public Point CurPoint => GameManager.GetPointByPos(transform.position);
         
         
         [HideInInspector]
         public TowerState state;
-        protected SpriteRenderer sp;
         
-        private int index;
+        protected SpriteRenderer sp;
+        protected BoxCollider2D box;
+        protected Animator anim;
+        
+        protected int index;
+        protected virtual void Start()
+        {
+            sp = transform.GetComponent<SpriteRenderer>();
+            box = GetComponent<BoxCollider2D>();
+            anim = GetComponent<Animator>();
+            Init();
+        }
         
         
         public virtual void Init()
         {
+            index = 0;
             state = TowerState.Idle;
-            tower = AssestMgr.Instance.GetTower(type);
-            sp = transform.GetComponent<SpriteRenderer>();
+            curTower = tower.towerMsg;
+
         }
      
+        
         public virtual bool CheckCanUpGrade(int index)
         {
             if(CurTower.nextLevelTower.Length <= index)
@@ -48,7 +70,6 @@ namespace tower
 
             if (PlayerStateMgr.Instance.player.coinCount < CurTower.nextLevelTower[index].buildPrice)
                 return false;
-
             this.index = index;
             return true;
         }
@@ -58,12 +79,13 @@ namespace tower
         {
             state = TowerState.Upgrading;
             PlayerStateMgr.Instance.player.coinCount -= CurTower.nextLevelTower[index].buildPrice;
+            
         }
         public virtual void OnBuildOver()
         {
             state = TowerState.Idle;
             curTower = CurTower.nextLevelTower[index];
-            
+            anim.SetInteger("curLevel",curTower.curLevel);
         }
         public void Seal()
         {
@@ -72,18 +94,27 @@ namespace tower
         public virtual BaseTower PickTower(Transform player)
         {
             Point point = CurPoint;
-            transform.SetParent(player);
-            transform.localPosition = Vector3.zero;
-            point.RemoveTower();
-            GameManager.ChangeGameState(GameState.PickTower);
-            return this;
+            if (point.towerType == TowerType.UpGrade)
+            {
+                state = TowerState.Idle;
+                UpGradeTower upGradeTower = point.BaseTower as UpGradeTower;
+                return upGradeTower.PickTower(player);
+            }
+            else
+            {
+                transform.SetParent(player);
+                transform.localPosition = Vector3.zero;
+                point.RemoveTower();
+                GameManager.ChangeGameState(GameState.PickTower);
+                return this;
+            }
         }
 
         public virtual void PutPower()
         {
             Point point = CurPoint;
             sp.sortingOrder = point.Y;
-            if (point.HadTower && point.type == TowerType.UpGrade)
+            if (point.towerType == TowerType.UpGrade)
             {
                 UpGradeTower upGradeTower = point.BaseTower as UpGradeTower; 
                 upGradeTower.PrepareUpgreade(this);
@@ -92,6 +123,7 @@ namespace tower
             }
             else
             {
+                Debug.Log(name + " " + CurTower.curLevel);
                 transform.SetParent(null);
                 transform.position = point.CenterPos;
                 point.SetTower(this);

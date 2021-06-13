@@ -22,7 +22,9 @@ public class GameManager : Singleton<GameManager>
     
     [HideInInspector]
     public List<TowerType> choosedTowerList;
-
+    [HideInInspector]
+    public Dictionary<TowerType,int> towerCount;
+    
     public static Dictionary<TowerType, TileType> TypeDic;
     
     private Dictionary<TowerType, GameObject> chooseUiDic;
@@ -31,15 +33,12 @@ public class GameManager : Singleton<GameManager>
     private Dictionary<Vector3Int, Point> pointDic = new Dictionary<Vector3Int, Point>();
     public static Dictionary<int, List<Point>> PointsDic;
 
-    public static List<Point> startPoints;
-    public static List<Point> finishPoints;
+    public List<Point> startPoints;
+    public List<Point> finishPoints;
     
     private void Start()
     {
         uiCanvas.gameObject.AddComponent<UiManager>();
-        gameObject.AddComponent<AssestMgr>();
-        
-        
     }
     
     public void Init()
@@ -50,6 +49,7 @@ public class GameManager : Singleton<GameManager>
         
         EventCenter.GetInstance().EventTrigger("GameManagerInit");     
         UiManager.Instance.Init();
+        LevelMgr.Instance.Init();
         
     }
 
@@ -58,17 +58,14 @@ public class GameManager : Singleton<GameManager>
         startPoints = new List<Point>();
         finishPoints = new List<Point>();
 
-        List<Transform> startTrans = TDRoad.Instance.startTrans;
-        List<Transform> finishTrans = TDRoad.Instance.finishTrans;
-        
-        for (int i = 0; i < startTrans.Count; i++)
+        for (int i = 0;PointsDic.ContainsKey(i) ; i++)
         {
-            startPoints.Add(GetPointByPos(startTrans[i].position));
-        }
-        
-        for (int i = 0; i < finishTrans.Count; i++)
-        {
-            finishPoints.Add(GetPointByPos(finishTrans[i].position));
+            Point start = PointsDic[i].First();
+            Point finish = PointsDic[i].Last();
+            if(!startPoints.Contains(start))
+                startPoints.Add(start);
+            if(!finishPoints.Contains(finish))
+                finishPoints.Add(finish);
         }
     }
     public void InitPointLine()
@@ -89,9 +86,12 @@ public class GameManager : Singleton<GameManager>
 
     public void InitTypeDic()
     {
+        towerCount = new Dictionary<TowerType, int>();
         TypeDic = new Dictionary<TowerType, TileType>();
+        
         for (int i = 0; i < choosedTowerList.Count; i++)
         {
+            towerCount.Add(choosedTowerList[i],0);
             TypeDic.Add(choosedTowerList[i],AssestMgr.Instance.GetTower(choosedTowerList[i]).tileType);
         }
     }
@@ -100,21 +100,36 @@ public class GameManager : Singleton<GameManager>
     {
         if(PointsDic.ContainsKey(roadID))
             return PointsDic[roadID];
+        
+        Debug.LogError($"map dont contains this rode {roadID}");
         return new List<Point>();
     }
     
     public static Point GetPointByPos(Vector3Int pos)
     {
-        if (!Instance.pointDic.ContainsKey(pos))
-            return null;
-
-        return Instance.pointDic[pos];
+        if (Instance.pointDic.ContainsKey(pos))
+            return Instance.pointDic[pos];
+        
+        Debug.LogError($"map dont contains this point {pos}");
+        return null;
     }
     
     public static Point GetPointByPos(Vector3 pos)
     {
         Vector3Int pointPos = VTool.ToPointPos(pos);
         return GetPointByPos(pointPos);
+    }
+    
+    public static List<Point> GetPointsByPos(List<Vector2> listVec2)
+    {
+        List<Point> points = new List<Point>();
+        for (int i = 0; i < listVec2.Count; i++)
+        {
+            Vector3Int pointPos = VTool.ToPointPos(listVec2[i]);
+            points.Add(GetPointByPos(pointPos));
+        }
+
+        return points;
     }
     
     public bool HadThisPoint(Vector3Int pos)
@@ -132,14 +147,19 @@ public class GameManager : Singleton<GameManager>
         Instance._gameState = gameState;
     }
 
+    public void RegisterTower(GameObject tower,TowerType type)
+    {
+        tower.name = $"{type}{towerCount[type]}";
+        towerCount[type]++;
+    }
     public static JState GetJState(Point point)
     {
         
-        if (point.HadTower && gameState != GameState.PickTower && point.type != TowerType.UpGrade)
+        if ((point.HadTower && gameState != GameState.PickTower) || (point.towerType == TowerType.UpGrade && point.BaseTower.state == TowerState.UpgradComplete))
         {
             return JState.PickUp;
         }
-        else if (gameState == GameState.PickTower && (!point.HadTower || (point.HadTower && point.type == TowerType.UpGrade)))
+        else if (gameState == GameState.PickTower && (!point.HadTower || (point.HadTower && point.towerType == TowerType.UpGrade)))
         {
             return JState.PutDown;
         }

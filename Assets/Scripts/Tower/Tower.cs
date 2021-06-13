@@ -17,7 +17,7 @@ namespace tower
     [Serializable]
     public class TowerMsg
     {
-        public int atk;
+        public int[] nums;
         public int buildPrice;
         public float buildTime;
         public Sprite towerSprite;

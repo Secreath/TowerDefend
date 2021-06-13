@@ -25,7 +25,7 @@ public class Point
 
     public TileType tileType => tile.TileType;
     
-    public TowerType type
+    public TowerType towerType
     {
         get
         {
@@ -36,7 +36,16 @@ public class Point
         }
     }
 
-    public bool HadTower => baseTower != default;
+    public bool HadTower
+    {
+        get
+        {
+            if(baseTower == default || baseTower.type == TowerType.UpGrade)
+                return false;
+            
+            return true;
+        }
+    }
     
     private BaseTile tile;
     public BaseTile Tile => tile;
@@ -61,14 +70,13 @@ public class Point
     
     public void SetTower(BaseTower tower)
     {
-        if (tileType == tower.requireTile)
+        if (tower.tileType == TileType.All ||tileType == tower.tileType)
         {
             this.baseTower = tower;
-            tower.Init();
         }
         else
         {
-            Debug.Log("TileTypeError");
+            Debug.LogError("TileTypeError");
         }
     }
 

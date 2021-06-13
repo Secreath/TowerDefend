@@ -21,7 +21,6 @@ namespace Enemy
                 checkRadius = box.bounds.size.x * 2;
             else
                 checkRadius = box.bounds.size.y * 2;
-            
         }
      
         private void FixedUpdate()

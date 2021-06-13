@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 318349e63b4eb42a3b67e2d03a07657f, type: 3}
   m_Name: UpGradeTower
   m_EditorClassIdentifier: 
-  type: 3
+  towerType: 3
+  tileType: 1
   towerMsg:
     atk: 0
     buildPrice: 0

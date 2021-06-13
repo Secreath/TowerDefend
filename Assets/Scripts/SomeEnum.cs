@@ -28,16 +28,28 @@ namespace Enemy
         Walk,
         Dead
     }
+
+    public enum EnemyType
+    {
+        Type1,
+        Type2,
+        Type3
+    }
 }
 
 namespace Follower
 {
-    public enum FollowState
+    public enum MoveState
     {
         InRange,
         OutRange,
         CanAttack,
-        FollowEnemy
+        FollowEnemy,
+        FollowPlayer,
+        FarEnemy,
+        FarPlayer,
+        FarOther,
+        Stop
     }
 }
 
@@ -65,7 +77,7 @@ namespace tower
     {
         Fire = 0,
         Shoot = 1,
-        Spawn = 2,
+        Soldier = 2,
         UpGrade = 3,
         End
     }
@@ -83,6 +95,7 @@ namespace tower
         Attack = 0,
         Upgrading = 1,
         Idle = 2,
+        UpgradComplete = 3,
         End
     }
 }

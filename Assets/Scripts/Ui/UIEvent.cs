@@ -44,7 +44,6 @@ namespace ui
             float radius = 50;
             float deltaTheta = (2f * Mathf.PI) / count;
             float theta = startAngle; //当前角度
-            
             for (int i = 0; i < chooseTypes.Count; i++)
             {
                 TowerType type = chooseTypes[i];
@@ -58,7 +57,6 @@ namespace ui
                 rect.SetParent(chooseTowerPanel, false);
                 rect.gameObject.SetActive(true);
                 rect.anchoredPosition = pos;
-                
 //                Button btn = obj.GetComponent<Button>();
 //                btn.onClick.AddListener(() =>
 //                {
@@ -94,25 +92,21 @@ namespace ui
         public void ClickChoose(int index)
         {
             TowerType type = chooseTypes[index];
-
+            
+            Debug.Log("Choose " + type + " " + GameManager.TypeDic[type] + " " + UiManager.curPoint.tileType);
             if (GameManager.TypeDic[type] != UiManager.curPoint.tileType)
             {
                 return;
             }
-            
-            Debug.Log(type);
             upGradeTowerPanel.anchoredPosition = chooseTowerPanel.anchoredPosition;
-            
 
             GameObject tower = Instantiate(AssestMgr.Instance.GetTowerBaseObj(type));
             BaseTower baseTower = tower.GetComponent<BaseTower>();
-            Debug.Log(baseTower.CurTower.nextLevelTower.Length);
             tower.SetActive(true);
             tower.transform.position = UiManager.curPoint.CenterPos;
             tower.GetComponent<SpriteRenderer>().sortingOrder = UiManager.curPoint.Y;
-            
+            GameManager.Instance.RegisterTower(tower, type);
             UiManager.curPoint.SetTower(baseTower);
-
         }
 
         public bool CheckUpgrade(int index)
@@ -127,14 +121,15 @@ namespace ui
 
         public void ShowUpgradeBtn(UpGradeTower upGradeTower)
         {
-            for(int i=0; i<upGradeTowerPanel.childCount ; i++)
+            for (int i = upGradeTowerPanel.childCount -1 ; i >=0; i--)
+            {
                 DestroyImmediate(upGradeTowerPanel.GetChild(i).gameObject);
-
+            }
             curTower = upGradeTower;
             BaseTower tower = upGradeTower.BuildTower;
             List<GameObject> upgradeList = SetCirclePanel(upGradeTowerPanel, upgradeBtn, tower.CurTower.nextLevelTower.Length);
             
-            Debug.Log("nextLevelTower " + tower.CurTower.nextLevelTower.Length);
+            
             for (int i = 0; i<tower.CurTower.nextLevelTower.Length; i++)
             {
                 upgradeList[i].transform.Find("Image").GetComponent<Image>().sprite =
@@ -194,7 +189,6 @@ namespace ui
                 rect.anchoredPosition = pos;
                 objList.Add(obj);
             }
-
             return objList;
         }
     }

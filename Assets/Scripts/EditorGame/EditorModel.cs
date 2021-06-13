@@ -13,7 +13,7 @@ namespace SaveRes
         public string fileName;
 
         public string localPath => $"{Application.dataPath}/Resources/{resPath}";
-        public string fileFullName => $"{fileName}.txt";
+        public string fileFullName => $"{fileName}.json";
 
         public string filePath => $"{localPath}/{fileFullName}";
         
@@ -78,16 +78,7 @@ namespace SaveRes
                 
         }
         
-        void CreateOrOPenFile(string path, string name, string info) //路径、文件名、写入内容
-        {          
-            StreamWriter sw; 
-            FileInfo fi = new FileInfo(path + "/" + name);
-            sw = fi.CreateText ();        //直接重新写入，如果要在原文件后面追加内容，应用fi.AppendText()
-            sw.WriteLine(info);
-            sw.Close();
-            sw.Dispose();
-            Debug.Log("writeFile");
-        }
+      
         
         void AppendOrOPenFile(string path, string name, string info) //路径、文件名、写入内容
         {          
@@ -103,9 +94,9 @@ namespace SaveRes
 
         void ConvertPathToStr()
         {
-            WritePathData writePathData = new WritePathData();
+            LevelPathData levelPathData = new LevelPathData();
 
-            writePathData.level = 1;
+            levelPathData.level = 1;
             List<PathData> pathData = new List<PathData>();
             foreach (PathLine pathLine in TDRoad.Instance.pathLines)
             {
@@ -115,13 +106,24 @@ namespace SaveRes
                 pathData.Add(data);
             }
 
-            writePathData.PathDatas = pathData;
+            levelPathData.PathDatas = pathData;
             
-            string jsonstring = JsonUtility.ToJson(writePathData);
+            string jsonstring = JsonUtility.ToJson(levelPathData);
             Debug.Log(jsonstring);
             CreateOrOPenFile(localPath, fileFullName, jsonstring);
         }
 
+        void CreateOrOPenFile(string path, string name, string info) //路径、文件名、写入内容
+        {          
+            StreamWriter sw; 
+            FileInfo fi = new FileInfo(path + "/" + name);
+            sw = fi.CreateText ();        //直接重新写入，如果要在原文件后面追加内容，应用fi.AppendText()
+            sw.WriteLine(info);
+            sw.Close();
+            sw.Dispose();
+            Debug.Log("writeFile");
+        }
+        
         List<Vector2> TransPath(List<Transform> pathTrans)
         {
             List<Vector2> posList = new List<Vector2>();
@@ -136,12 +138,12 @@ namespace SaveRes
 
     
     [Serializable]
-    public class WritePathData
+    public class LevelPathData
     {
         public int level;
         public List<PathData> PathDatas;
 
-        public WritePathData()
+        public LevelPathData()
         {
             PathDatas = new List<PathData>();
         }

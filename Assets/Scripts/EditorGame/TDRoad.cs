@@ -16,7 +16,7 @@ public class TDRoad : Singleton<TDRoad>
     private Transform path;                    //路线
     private Transform finish;            //终点
 
-    public Dictionary<int,List<Point>> PointsDic = new Dictionary<int, List<Point>>();
+    //public Dictionary<int,List<Point>> PointsDic = new Dictionary<int, List<Point>>();
     
     
     private List<Transform> inflections = new List<Transform>();
@@ -32,13 +32,8 @@ public class TDRoad : Singleton<TDRoad>
     private int pLength = 0;
     private int fLength = 0;
 
-    [HideInInspector]
-    public List<Transform> startTrans = new List<Transform>();
-    [HideInInspector]
-    public List<Transform> finishTrans = new List<Transform>();
     void Start()
     {
-        Debug.Log(pathLines[0].pathStr + " " +pathLines[0].path.Count);
         start = transform.Find("Start");
         inflection = transform.Find("Inflection");
         path = transform.Find("Path");
@@ -103,10 +98,6 @@ public class TDRoad : Singleton<TDRoad>
             {
                 pathList[i].Add(path.GetChild(j));
             }
-            if(path.childCount > 0 && parent == start && !startTrans.Contains(path.GetChild(0)))
-                startTrans.Add(path.GetChild(0));
-            if(path.childCount > 0 && parent == finish && !finishTrans.Contains(path.GetChild(0)))
-                finishTrans.Add(path.GetChild(0));
         }
     }
     
@@ -201,24 +192,24 @@ public class TDRoad : Singleton<TDRoad>
         return new List<Transform>();
     }
     
-    public static List<Point> GetPointLine(int roadID)
-    {
-        if (Instance.pathLines.Count <= roadID)
-            return new List<Point>();
-
-        if (!Instance.PointsDic.ContainsKey(roadID))
-        {
-            List<Point> pointList = new List<Point>();
-
-            for (int i = 0; i < Instance.pathLines[roadID].path.Count; i++)
-            {
-                Vector3 pos = Instance.pathLines[roadID].path[i].position;
-                pointList.Add(GameManager.GetPointByPos(pos));
-            }
-            Instance.PointsDic.Add(roadID,pointList);
-        }
-        return Instance.PointsDic[roadID];
-    }
+//    public static List<Point> GetPointLine(int roadID)
+//    {
+//        if (Instance.pathLines.Count <= roadID)
+//            return new List<Point>();
+//
+//        if (!Instance.PointsDic.ContainsKey(roadID))
+//        {
+//            List<Point> pointList = new List<Point>();
+//
+//            for (int i = 0; i < Instance.pathLines[roadID].path.Count; i++)
+//            {
+//                Vector3 pos = Instance.pathLines[roadID].path[i].position;
+//                pointList.Add(GameManager.GetPointByPos(pos));
+//            }
+//            Instance.PointsDic.Add(roadID,pointList);
+//        }
+//        return Instance.PointsDic[roadID];
+//    }
     
 }
 

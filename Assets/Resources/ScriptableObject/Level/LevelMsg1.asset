@@ -14,5 +14,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelIndex: 0
   chooseTowers: 0,1,2
-  spawnTimeList: []
-  spawnPointList: []
+  enemySpawnWave:
+  - waveTime:
+      restTime: 5
+      attactTime: 10
+    wavePoint:
+    - pointId: 0
+      pathId: 0
+      EnemyBornMsgs:
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 5
+          type: 0
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 0.1
+          type: 0
+        - num: 0.2
+          type: 1
+        - num: 0.2
+          type: 1
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 5
+          type: 0
+    - pointId: 1
+      pathId: 2
+      EnemyBornMsgs:
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 10
+          type: 0
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 0.1
+          type: 0
+        - num: 0.2
+          type: 1
+        - num: 0.2
+          type: 1
+      - waitTime: 0
+        intervalTime: 0.5
+        enemys:
+        - num: 10
+          type: 0

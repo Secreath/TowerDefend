@@ -33,6 +33,8 @@ namespace ui
         //timeCount
         private GameObject timer;
         private Transform timerList;
+        private Transform timeCountPanel;
+        
         private List<GameObject> timeCountList;
         private int _curChooseIndex;
         private int curChooseIndex
@@ -68,6 +70,8 @@ namespace ui
             hightLightRect = transform.Find("HightLight") as RectTransform;
             
             timerList = transform.Find("TimerList");
+            timeCountPanel = transform.Find("TimeCountPanel");
+            
             timer = timerList.Find("TimeCount").gameObject;
             uiEvent = gameObject.AddComponent<UIEvent>();
             
@@ -186,9 +190,8 @@ namespace ui
 
         private void RefreshChildList(Transform parent,UiState uiState)
         {
-            if(uiState != UiState.OpenChoosePanel &&  uiState != UiState.OpenUpGradePanel)
+            if(parent.childCount < 1 || (uiState != UiState.OpenChoosePanel &&  uiState != UiState.OpenUpGradePanel))
                 return;
-            
             childList = new List<Transform>();
             for (int i = 0; i < parent.childCount; i++)
                 childList.Add(parent.GetChild(i));
@@ -228,7 +231,10 @@ namespace ui
                     break;
                 case UiState.OpenUpGradePanel:
                     if (!uiEvent.CheckUpgrade(curChooseIndex))
+                    {
+                        Debug.Log(uiEvent.CheckUpgrade(curChooseIndex));
                         return;
+                    }
                     uiEvent.ClickUpGrade();
                     EscAllUi();
                     break;
@@ -246,6 +252,18 @@ namespace ui
             newTimer.name = "TimerCount" + timeCountList.Count;
             timeCountList.Add(newTimer);
             timeCountDown = newTimer.GetComponent<TimeCountDown>();
+        }
+
+        public void ShowTimeCountPanel(float time,string str)
+        {
+            timeCountPanel.gameObject.SetActive(true);
+            TimeCountDown timeCountDown = timeCountPanel.Find("TimeCount").GetComponent<TimeCountDown>();
+            timeCountDown.SetRefreshTime(time,ShowOver);
+            timeCountPanel.Find("Text").GetComponent<Text>().text = str;
+            void ShowOver()
+            {
+                timeCountPanel.gameObject.SetActive(false);
+            }
         }
     }
     

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 318349e63b4eb42a3b67e2d03a07657f, type: 3}
   m_Name: shootTower
   m_EditorClassIdentifier: 
-  type: 1
+  towerType: 1
+  tileType: 1
   towerMsg:
     atk: 0
     buildPrice: 100

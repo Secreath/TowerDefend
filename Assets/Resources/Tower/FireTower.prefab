@@ -47,6 +47,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -69,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1934286951
-  m_SortingLayer: 3
+  m_SortingLayer: 1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 863e78d87166d4836971dfade8a72ec1, type: 3}
   m_Color: {r: 0.6415094, g: 0.45087218, b: 0.45087218, a: 0.5058824}
@@ -138,7 +139,7 @@ GameObject:
   - component: {fileID: 5499724906322836098}
   - component: {fileID: 5499724906322836099}
   m_Layer: 8
-  m_Name: ShotTower
+  m_Name: FireTower
   m_TagString: Construction
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,6 +176,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -197,7 +199,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1934286951
-  m_SortingLayer: 3
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 88291e0c45a4c4cacb664e51f0063322, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -248,6 +250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5450f139f7637491785ed4de91496ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tower: {fileID: 11400000, guid: def7d324048bb400eb3ae7baf7a7e853, type: 2}
+  type: 0
+  tileType: 0
+  state: 0
   range: 3
   attackTime: 1
 --- !u!95 &5499724906322836099

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318349e63b4eb42a3b67e2d03a07657f, type: 3}
+  m_Name: SoldierTower
+  m_EditorClassIdentifier: 
+  towerType: 2
+  tileType: 1
+  towerMsg:
+    nums: 030000000300000005000000
+    buildPrice: 100
+    buildTime: 2
+    towerSprite: {fileID: 21300000, guid: efa4ecf6eab274d84a3a1799daec5222, type: 3}
+    nextLevelTower:
+    - nums: 040000000500000004000000
+      buildPrice: 200
+      buildTime: 3
+      towerSprite: {fileID: 21300000, guid: c84c09780c9ee4bd1933ce79b708d9b8, type: 3}
+      nextLevelTower: []
+    - nums: 050000000600000004000000
+      buildPrice: 300
+      buildTime: 2
+      towerSprite: {fileID: 21300000, guid: c84c09780c9ee4bd1933ce79b708d9b8, type: 3}
+      nextLevelTower: []

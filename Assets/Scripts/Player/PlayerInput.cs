@@ -35,7 +35,7 @@ namespace Player
                     else if (GameManager.GetJState(point) == JState.PickUp)
                     {
                         Debug.Log("pick");
-                         tower = point.BaseTower.PickTower(transform);
+                        tower = point.BaseTower.PickTower(transform);
                     }
                     else if (GameManager.GetJState(point) == JState.PutDown)
                     {

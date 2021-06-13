@@ -13,7 +13,6 @@ public class MonoMgr : BaseManager<MonoMgr>
         //保证了MonoController的唯一性
         GameObject obj = new GameObject("MonoController");
         controller = obj.AddComponent<MonoController>();
-        Debug.Log("mono");
     }
 
     public void AddUpdateListener(UnityAction fun)
