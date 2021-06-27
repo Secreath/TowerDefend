@@ -42,7 +42,7 @@
           <e p="Enemy" t="Include">
             <e p="BaseEnemy.cs" t="Include" />
             <e p="BaseEnemyAnimStateMgr.cs" t="Include" />
-            <e p="PeenEnemy.cs" t="Include" />
+            <e p="Savage.cs" t="Include" />
             <e p="test" t="Include">
               <e p="EnemyAction.cs" t="Include" />
             </e>
@@ -60,7 +60,6 @@
           </e>
           <e p="Level" t="Include">
             <e p="LevelMgr.cs" t="Include" />
-            <e p="LevelMsg.cs" t="Include" />
           </e>
           <e p="Map.cs" t="Include" />
           <e p="Other" t="Include">
@@ -72,6 +71,7 @@
             <e p="FollowMgr.cs" t="Include" />
             <e p="PlayerAnimStateMgr.cs" t="Include" />
             <e p="PlayerInput.cs" t="Include" />
+            <e p="PlayerPackage.cs" t="Include" />
             <e p="PlayerStateMgr.cs" t="Include" />
             <e p="ShineImage.cs" t="Include" />
           </e>
@@ -100,27 +100,33 @@
             <e p="Scene" t="Include">
               <e p="SceneManager.cs" t="Include" />
             </e>
+            <e p="Singleton.cs" t="Include" />
             <e p="UIMgr" t="Include">
               <e p="BasePenal.cs" t="Include" />
               <e p="LoginPenal.cs" t="Include" />
               <e p="UIMgr.cs" t="Include" />
             </e>
           </e>
-          <e p="Singleton.cs" t="Include" />
+          <e p="ScriptableObject" t="Include">
+            <e p="BuildRes.cs" t="Include" />
+            <e p="LevelMsg.cs" t="Include" />
+            <e p="Tower.cs" t="Include" />
+          </e>
           <e p="SomeEnum.cs" t="Include" />
           <e p="SomeInterface.cs" t="Include" />
           <e p="Teammate.cs" t="Include" />
           <e p="Tower" t="Include">
             <e p="BaseConstruct.cs" t="Include" />
             <e p="BaseTower.cs" t="Include" />
+            <e p="ResourcesPoint.cs" t="Include" />
             <e p="ShotTower.cs" t="Include" />
             <e p="SoldierTower.cs" t="Include" />
-            <e p="Tower.cs" t="Include" />
             <e p="TowerRange.cs" t="Include" />
             <e p="UpGradeTower.cs" t="Include" />
           </e>
           <e p="Ui" t="Include">
             <e p="CircleChoosePop.cs" t="Include" />
+            <e p="EnemyUiManager.cs" t="Include" />
             <e p="UiEvent.cs" t="Include" />
             <e p="UiManager.cs" t="Include" />
           </e>

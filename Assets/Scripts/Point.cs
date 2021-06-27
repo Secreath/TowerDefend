@@ -85,20 +85,27 @@ public class Point
         this.baseTower = default;
     }
     
-    public static bool operator !=(Point a, Point b)
-    {
-        return !(a == b);
-    }
-        
-    public static bool operator ==(Point a, Point b)
-    {
-        if (a == null || b == null)
-            return false;
-        
-        if (a.X == b.X && a.Y == b.Y)
-            return true;
-        
-        return false;
-    }
+//    public static bool operator !=(Point a, Point b)
+//    {
+//        return !(a == b);
+//    }
+//        
+//    public static bool operator ==(Point a, Point b)
+//    {
+//        if (!GameManager.Instance.pointList.Contains(a) && !GameManager.Instance.pointList.Contains(b))
+//            return true;
+//        
+//        if (a.X == b.X && a.Y == b.Y)
+//            return true;
+//        
+//        return false;
+//    }
 }
 
+public static class PointTransfrom
+{
+    public static Vector3 CenterPos(this Transform tran)
+    {
+        return VTool.ToTilePos(tran.position);
+    }
+}

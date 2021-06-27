@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameUi;
+using ui;
 using UnityEngine;
 
 public class BaseProperty : MonoBehaviour
 {
-    private CharacterUiMgr uimgr;
+    public Vector3 uiOffSet;
+    protected CharacterUiMgr uimgr;
     
     [SerializeField]protected int atk;
     [SerializeField]protected int maxHp;
@@ -16,6 +18,7 @@ public class BaseProperty : MonoBehaviour
     protected int _curHp;
 
     private float _curSpeed;
+    
     protected float curSpeed
     {
         get
@@ -37,7 +40,7 @@ public class BaseProperty : MonoBehaviour
     protected virtual void Start()
     {
         canMove = true;
-        uimgr = transform.Find("Canvas").GetComponent<CharacterUiMgr>();
+        uimgr = UiManager.EnemyUi.PopCharUiBar();
         _curHp = maxHp;
         curSpeed = moveSpeed;
     }
@@ -45,11 +48,17 @@ public class BaseProperty : MonoBehaviour
 
     protected virtual void Dead()
     {
+        UiManager.EnemyUi.PushCharUiBar(uimgr);
         Destroy(gameObject);
     }
 
     protected void HpBarUpDate()
     {
         uimgr.HpBarUpdate(_curHp,maxHp);
+    }
+    
+    protected void SetUiPos(Vector3 pos)
+    {
+        uimgr.SetPos(pos + uiOffSet);
     }
 }

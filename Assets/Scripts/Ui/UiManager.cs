@@ -28,14 +28,20 @@ namespace ui
         private GameObject preUiObj;
         private UiState uiState;
 
+        //PlayerPackage
+        private RectTransform playerPackageRect;
+        private Dictionary<ResType,Text> resTextDic;
+        
         //height
         private List<Transform> childList;
         //timeCount
         private GameObject timer;
         private Transform timerList;
         private Transform timeCountPanel;
-        
+        //timeCount
         private List<GameObject> timeCountList;
+        //EnemyUi
+        public static EnemyUiManager EnemyUi;
         private int _curChooseIndex;
         private int curChooseIndex
         {
@@ -69,13 +75,26 @@ namespace ui
             upGradeTowerPanel = transform.Find("UpGradeTower") as RectTransform;
             hightLightRect = transform.Find("HightLight") as RectTransform;
             
+            playerPackageRect = transform.Find("PlayerPackage") as RectTransform;
+            
+            resTextDic = new Dictionary<ResType, Text>();
+            for (int i = 0; i != (int)ResType.End; i++)
+            {
+                ResType type = (ResType) i;
+                Text text = playerPackageRect.Find(type.ToString()).Find("Text").GetComponent<Text>();
+                if(text!=null)
+                    resTextDic.Add(type,text);
+            }
+            
             timerList = transform.Find("TimerList");
             timeCountPanel = transform.Find("TimeCountPanel");
             
             timer = timerList.Find("TimeCount").gameObject;
             uiEvent = gameObject.AddComponent<UIEvent>();
+            EnemyUi = transform.Find("EnemyUi").GetComponent<EnemyUiManager>();
             
             
+            EnemyUi.SetUiCamera(UiCamera);
         }
 
         public void Init()
@@ -264,6 +283,11 @@ namespace ui
             {
                 timeCountPanel.gameObject.SetActive(false);
             }
+        }
+        
+        public void ChangePackageUi(ResType res,int num)
+        {
+            resTextDic[res].text = num.ToString();
         }
     }
     

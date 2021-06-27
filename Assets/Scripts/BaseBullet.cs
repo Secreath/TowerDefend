@@ -30,7 +30,7 @@ public class BaseBullet : MonoBehaviour
         
     }
 
-    public void SetShootDir(int damage,Vector2 target,Vector2 bullet)
+    public void SetShotDir(int damage,Vector2 target,Vector2 bullet)
     {
         Damage = damage;
         transform.position = bullet;

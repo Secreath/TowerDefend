@@ -32,10 +32,11 @@ public class EventInfo<T0,T1> : IEventInfo           //基类存子类 里氏转
 public class EventInfo : IEventInfo           //基类存子类 里氏转换原则
 {
     public UnityAction actions;
-
-    public EventInfo(UnityAction action)
+    public bool once;
+    public EventInfo(UnityAction action,bool once)
     {
         actions += action;
+        this.once = once;
     }
 }
 //事件中心  单例模式
@@ -83,7 +84,7 @@ public class EventCenter : BaseManager<EventCenter>
         }
     }
     //无参重载
-    public void AddEventListener(string name, UnityAction action)
+    public void AddEventListener(string name, UnityAction action,bool once = false)
     {
         if (eventDic.ContainsKey(name))
         {
@@ -91,7 +92,7 @@ public class EventCenter : BaseManager<EventCenter>
         }  
         else
         {
-            eventDic.Add(name, new EventInfo(action));
+            eventDic.Add(name, new EventInfo(action,once));
         }
     }
 
@@ -146,7 +147,9 @@ public class EventCenter : BaseManager<EventCenter>
         if (eventDic.ContainsKey(name))
         {
             if ((eventDic[name] as EventInfo).actions != null)
-                (eventDic[name] as EventInfo).actions.Invoke();            
+                (eventDic[name] as EventInfo).actions.Invoke();
+            if ((eventDic[name] as EventInfo).once)
+                eventDic.Remove(name);
         }
     }
 

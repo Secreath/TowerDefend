@@ -68,7 +68,7 @@ namespace tower
             if(CurTower.nextLevelTower.Length <= index)
                 return false;
 
-            if (PlayerStateMgr.Instance.player.coinCount < CurTower.nextLevelTower[index].buildPrice)
+            if (PlayerPackage.Instance.CoinNums < CurTower.nextLevelTower[index].buildPrice)
                 return false;
             this.index = index;
             return true;
@@ -78,7 +78,7 @@ namespace tower
         public virtual void OnBuilding()
         {
             state = TowerState.Upgrading;
-            PlayerStateMgr.Instance.player.coinCount -= CurTower.nextLevelTower[index].buildPrice;
+            PlayerPackage.Instance.CoinNums -= CurTower.nextLevelTower[index].buildPrice;
             
         }
         public virtual void OnBuildOver()
@@ -102,6 +102,7 @@ namespace tower
             }
             else
             {
+                state = TowerState.OnPick;
                 transform.SetParent(player);
                 transform.localPosition = Vector3.zero;
                 point.RemoveTower();
@@ -124,6 +125,7 @@ namespace tower
             else
             {
                 Debug.Log(name + " " + CurTower.curLevel);
+                state = TowerState.Idle;
                 transform.SetParent(null);
                 transform.position = point.CenterPos;
                 point.SetTower(this);

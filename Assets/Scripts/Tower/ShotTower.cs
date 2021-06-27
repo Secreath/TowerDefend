@@ -45,11 +45,11 @@ namespace tower
 
        
 
-        public void Shoot()
+        public void Shot()
         {
             GameObject bullet = PoolMgr.GetInstance().PopObj("PeaBall");
             bullet.tag = "PlayerBullet";
-            bullet.GetComponent<BaseBullet>().SetShootDir(10, targetPos, shotPoint);
+            bullet.GetComponent<BaseBullet>().SetShotDir(10, targetPos, shotPoint);
         }
 
         public void ResetAttack()

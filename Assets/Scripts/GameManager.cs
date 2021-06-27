@@ -31,6 +31,8 @@ public class GameManager : Singleton<GameManager>
     private Dictionary<TowerType, GameObject> upgradeUiDic;
     
     private Dictionary<Vector3Int, Point> pointDic = new Dictionary<Vector3Int, Point>();
+    public List<Point> pointList = new List<Point>();
+    
     public static Dictionary<int, List<Point>> PointsDic;
 
     public List<Point> startPoints;
@@ -139,6 +141,7 @@ public class GameManager : Singleton<GameManager>
     
     public void AddTileDic(Point point)
     {
+        pointList.Add(point);
         pointDic.Add(point.Pos,point);
     }
 

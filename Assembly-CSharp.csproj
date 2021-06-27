@@ -56,7 +56,7 @@
      <Compile Include="Assets\Scripts\Player\ShineImage.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\TreeResult.cs" />
      <Compile Include="Assets\Scripts\Tower\BaseConstruct.cs" />
-     <Compile Include="Assets\Scripts\Tower\Tower.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObject\Tower.cs" />
      <Compile Include="Assets\Scripts\Other\Curve.cs" />
      <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />
      <Compile Include="Assets\Scripts\Tower\ShotTower.cs" />
@@ -67,7 +67,7 @@
      <Compile Include="Assets\Scripts\Other\TimeCountDown.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\Base\PoolMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\PublicMono\MonoMgr.cs" />
-     <Compile Include="Assets\Scripts\Singleton.cs" />
+     <Compile Include="Assets\Scripts\ProjectBase\Singleton.cs" />
      <Compile Include="Assets\Scripts\SomeEnum.cs" />
      <Compile Include="Assets\Scripts\EditorGame\EditorModel.cs" />
      <Compile Include="Assets\Scripts\Map.cs" />
@@ -76,11 +76,13 @@
      <Compile Include="Assets\Scripts\ProjectBase\EventCenter\EventCenter.cs" />
      <Compile Include="Assets\Scripts\Other\Tools.cs" />
      <Compile Include="Assets\Scripts\Tower\BaseTower.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObject\BuildRes.cs" />
      <Compile Include="Assets\Scripts\Level\LevelMgr.cs" />
+     <Compile Include="Assets\Scripts\Tower\ResourcesPoint.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateMgr.cs" />
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\EditorGame\TDRoad.cs" />
-     <Compile Include="Assets\Scripts\Enemy\PeenEnemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Savage.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Ui\UiManager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
@@ -88,7 +90,7 @@
      <Compile Include="Assets\Scripts\Player\FollowMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\LoginPenal.cs" />
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
-     <Compile Include="Assets\Scripts\Level\LevelMsg.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObject\LevelMsg.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\BasePenal.cs" />
      <Compile Include="Assets\Scripts\Ui\UIEvent.cs" />
      <Compile Include="Assets\Scripts\Ui\CircleChoosePop.cs" />
@@ -110,10 +112,12 @@
      <Compile Include="Assets\Scripts\ProjectBase\Base\BaseManager.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\PublicMono\MonoController.cs" />
      <Compile Include="Assets\Scripts\SomeInterface.cs" />
+     <Compile Include="Assets\Scripts\Ui\EnemyUiManager.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\ResMgr\ResMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\Base\AutoPush.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\BTTest.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerPackage.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.8f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

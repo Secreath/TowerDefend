@@ -352,10 +352,10 @@ public class UiTool
 //        sprite.color = ColorTool.ChangeAlpha(color, maxAlpha);
 //    }
 
-    public static Vector2 GetTowerUiPos(Transform transform,Camera UiCamera, Point point)
+    public static Vector2 GetTowerUiPos(Transform transform,Camera UiCamera, Vector3 pos)
     {
         //使用场景相机将世界坐标转换为屏幕坐标
-        Vector2 screenUiPos = UiCamera.WorldToScreenPoint(point.CenterPos);
+        Vector2 screenUiPos = UiCamera.WorldToScreenPoint(pos);
             
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             transform as RectTransform, 
@@ -363,6 +363,10 @@ public class UiTool
             UiCamera, 
             out Vector2 retPos);
         return retPos;
+    }
+    public static Vector2 GetTowerUiPos(Transform transform,Camera UiCamera, Point point)
+    {
+        return GetTowerUiPos(transform, UiCamera, point.CenterPos);
     }
 }
 public class Swap
@@ -430,6 +434,21 @@ public class ColorTool
         return color;
     }
    
+}
+
+public class CompareTool
+{
+    public static bool DisLongerThan(Transform a,Transform b,float dis)
+    {
+        return DisLongerThan(a.position, b.position, dis);
+
+    }
+    
+    public static bool DisLongerThan(Vector3 a,Vector3 b,float dis)
+    {
+        return ((a - b).sqrMagnitude > dis * dis);
+
+    }
 }
 
 public class TimeTool

@@ -7,7 +7,6 @@ namespace Player
     [Serializable]
     public class PlayerProperty
     {
-        public int coinCount;
         public float walkSpeed = 10f;
         public int towerPoint = 1;
     }

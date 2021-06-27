@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318349e63b4eb42a3b67e2d03a07657f, type: 3}
+  m_Name: shotTower
+  m_EditorClassIdentifier: 
+  towerType: 1
+  tileType: 1
+  towerMsg:
+    atk: 0
+    buildPrice: 100
+    buildTime: 5
+    towerSprite: {fileID: 0}
+    nextLevelTower:
+    - atk: 5
+      buildPrice: 100
+      buildTime: 5
+      towerSprite: {fileID: 2181564322307129396, guid: 0df130dba097d43a79de3bebbd122bd1,
+        type: 3}
+      nextLevelTower: []
+    - atk: 6
+      buildPrice: 120
+      buildTime: 6
+      towerSprite: {fileID: -8119897763881895249, guid: 0df130dba097d43a79de3bebbd122bd1,
+        type: 3}
+      nextLevelTower: []

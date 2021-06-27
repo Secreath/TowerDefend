@@ -57,7 +57,7 @@ public class SoldierTower : BaseTower
     
     private IEnumerator CheckChild()
     {
-        if (_soliderQueue.Count < soliderCount)
+        if (_soliderQueue.Count < soliderCount && state == TowerState.Idle)
         {
             anim.SetBool("isBorn",true);
         }

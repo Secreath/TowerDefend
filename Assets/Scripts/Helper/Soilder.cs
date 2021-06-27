@@ -72,7 +72,7 @@ public class Soilder : MonoBehaviour
         
         GameObject bullet = PoolMgr.GetInstance().PopObj("PeaBall");
         bullet.tag = "PlayerBullet";
-        bullet.GetComponent<BaseBullet>().SetShootDir(curAtk, _attackTarget.transform.position, transform.position);
+        bullet.GetComponent<BaseBullet>().SetShotDir(curAtk, _attackTarget.transform.position, transform.position);
          
     }
     

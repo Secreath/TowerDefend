@@ -76,7 +76,7 @@ namespace tower
      public enum TowerType
     {
         Fire = 0,
-        Shoot = 1,
+        Shot = 1,
         Soldier = 2,
         UpGrade = 3,
         End
@@ -96,6 +96,17 @@ namespace tower
         Upgrading = 1,
         Idle = 2,
         UpgradComplete = 3,
+        OnPick = 4,
+        End
+    }
+    
+    public enum ResType
+    {
+        Wood = 0,
+        Water = 1,
+        Steel = 2,
+        Golden = 3,
+        Coin = 4,
         End
     }
 }

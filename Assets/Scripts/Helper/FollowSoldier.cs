@@ -51,11 +51,11 @@ public class FollowSoldier : MonoBehaviour
     private void Update()
     {
         CheckAround();
-        CheckMoveState();
         ChangeMoveState();
+        CheckMoveState();
     }
 
-    private void ChangeMoveState()
+    private void CheckMoveState()
     {
         switch (_moveType)
         {
@@ -75,8 +75,8 @@ public class FollowSoldier : MonoBehaviour
                 break;
         }
     }
-    
-    public void CheckMoveState()
+    //ChangeMoveState
+    public void ChangeMoveState()
     {
         //敌人不为空 且距离玩家距离不超过最大攻击距离
         if (_enemy != null && (Vector2.Distance(transform.position, _player.position) < maxAtkDis))
@@ -159,5 +159,11 @@ public class FollowSoldier : MonoBehaviour
     private void TowerDestory()
     {
         Debug.Log("SoliderDestory");
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.GetInstance().RemoveEventListener($"{_house.name}UpGrade",TowerUpgrade);
+        EventCenter.GetInstance().RemoveEventListener($"{_house.name}Destory",TowerDestory);
     }
 }
