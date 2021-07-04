@@ -62,6 +62,9 @@
             <e p="LevelMgr.cs" t="Include" />
           </e>
           <e p="Map.cs" t="Include" />
+          <e p="Model" t="Include">
+            <e p="MonsterModel.cs" t="Include" />
+          </e>
           <e p="Other" t="Include">
             <e p="Curve.cs" t="Include" />
             <e p="TimeCountDown.cs" t="Include" />

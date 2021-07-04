@@ -1,0 +1,1 @@
+{"Monsters":[{"Id": 1.0, "Hp": 10.0, "Atk": 5.0, "Def": 4.0, "Spd": 5.0, "Type": 1.0, "GroundAir": 0.0, "Aoe": 0.0, "SkillId": 1.0}, {"Id": 3.0, "Hp": 12.0, "Atk": 3.0, "Def": 6.0, "Spd": 51.0, "Type": 3.0, "GroundAir": 1.0, "Aoe": 3.0, "SkillId": 4.0}]}

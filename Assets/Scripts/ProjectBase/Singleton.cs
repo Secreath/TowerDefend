@@ -19,3 +19,22 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 }
+
+
+//public abstract class SingletonWithOutMono<T>
+//{
+//    private static T instance;
+//
+//    public static T Instance
+//    {
+//        get
+//        {
+//            if (instance == null)
+//            {
+//                instance = new T();
+//            }
+//
+//            return instance;
+//        }
+//    }
+//}

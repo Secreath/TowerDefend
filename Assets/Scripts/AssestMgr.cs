@@ -12,50 +12,54 @@ using UnityEngine.UI;
 
 public class AssestMgr : Singleton<AssestMgr>
 {
-    private Dictionary<TowerType, Tower> towerDic;
-    private Dictionary<TowerType, GameObject> towerBaseObjDic;
-    private Dictionary<TowerType, GameObject> chooseUiDic;
+    private Dictionary<TowerType, Tower> _towerDic;
+    private Dictionary<TowerType, GameObject> _towerBaseObjDic;
+    private Dictionary<TowerType, GameObject> _chooseUiDic;
     
-    private Dictionary<int, LevelMsg> levelMsgDic;
-    private Dictionary<EnemyType, GameObject> EnemyDic;
-    private Dictionary<ResType, BuildRes> BuildResDic;
+    private Dictionary<int, LevelMsg> _levelMsgDic;
+    private Dictionary<EnemyType, GameObject> _enemyDic;
+    private Dictionary<ResType, BuildRes> _buildResDic;
+
+    private MonsterModel _monsterModel;
     
-    private int LoadCount;
-    private int curLoad;
+    
+    private int _loadCount;
+    private int _curLoad;
     private float curProgress
     {
-        get { return (float) curLoad / LoadCount; }
+        get { return (float) _curLoad / _loadCount; }
     }
     
-    private bool loadComplete;
+    private bool _loadComplete;
 
-    public bool LoadComplete => loadComplete;
+    public bool LoadComplete => _loadComplete;
 
-    private LevelMsg curLevelMsg;
-    public LevelMsg CurLevelMsg => curLevelMsg;
+    private LevelMsg _curLevelMsg;
+    public LevelMsg CurLevelMsg => _curLevelMsg;
     
     public void Init(int level)
     {
-        towerDic = new Dictionary<TowerType, Tower>();
-        towerBaseObjDic = new Dictionary<TowerType, GameObject>();
-        chooseUiDic = new Dictionary<TowerType, GameObject>();
-        levelMsgDic = new Dictionary<int, LevelMsg>();
-        EnemyDic = new Dictionary<EnemyType, GameObject>();
-        BuildResDic = new Dictionary<ResType, BuildRes>();
+        _towerDic = new Dictionary<TowerType, Tower>();
+        _towerBaseObjDic = new Dictionary<TowerType, GameObject>();
+        _chooseUiDic = new Dictionary<TowerType, GameObject>();
+        _levelMsgDic = new Dictionary<int, LevelMsg>();
+        _enemyDic = new Dictionary<EnemyType, GameObject>();
+        _buildResDic = new Dictionary<ResType, BuildRes>();
         
         int typeCount =(int)TowerType.End;
-        curLoad = 0;
-        LoadCount = typeCount * ((int)UiType.End + 2);
+        _curLoad = 0;
+        _loadCount = typeCount * ((int)UiType.End + 2);
         
         
         LoadLevelRes(level);
+        LoadMonsterJson();
     }
 
     public void LoadLevelRes(int level)
     {
         List<TowerType> choosedTowerList = new List<TowerType>();
-        curLevelMsg = LoadLevelMsg(level);
-        string[] strs = curLevelMsg.chooseTowers.Split(',');
+        _curLevelMsg = LoadLevelMsg(level);
+        string[] strs = _curLevelMsg.chooseTowers.Split(',');
         for (int i = 0; i < strs.Length; i++)
         {
             if (int.TryParse(strs[i], out int type))
@@ -80,9 +84,20 @@ public class AssestMgr : Singleton<AssestMgr>
         LevelPathData pathData = JsonUtility.FromJson<LevelPathData>(text.text);
         return pathData;
     }
+    
+    public void LoadMonsterJson()
+    {
+        _monsterModel = new MonsterModel();
+        
+        TextAsset text = Resources.Load<TextAsset>($"Json/Monster");
+        if(text == null)
+            throw new NullReferenceException($"本地未包含 Json Monster");
+        _monsterModel.InitMonster(text.text);
+    }
+    
     private IEnumerator LoadAllTowerObj(List<TowerType> choosedTowerList)
     {
-        loadComplete = false;
+        _loadComplete = false;
         ResourceRequest rr;
         
         for (int i = 0; i < choosedTowerList.Count; i++)
@@ -90,15 +105,15 @@ public class AssestMgr : Singleton<AssestMgr>
             TowerType towerType = choosedTowerList[i];
             Tower tower = Resources.Load<Tower>($"ScriptableObject/Tower/{towerType.ToString()}Tower");
 
-            towerDic.Add(towerType,tower);
+            _towerDic.Add(towerType,tower);
             tower.maxLevel = SetTowerLevel(tower.towerMsg, 0);
             
             
             rr = Resources.LoadAsync<GameObject>($"Tower/{towerType.ToString()}Tower");
             yield return rr;
-            curLoad++;
+            _curLoad++;
             
-            towerBaseObjDic.Add(towerType,rr.asset as GameObject);
+            _towerBaseObjDic.Add(towerType,rr.asset as GameObject);
             
             for (int j = 0; j != (int) UiType.End; j++)
             {
@@ -110,13 +125,13 @@ public class AssestMgr : Singleton<AssestMgr>
                 switch (uitype)
                 {
                     case UiType.ChooseBtn:
-                        chooseUiDic.Add(towerType,rr.asset as GameObject);
+                        _chooseUiDic.Add(towerType,rr.asset as GameObject);
                         break;
                     case UiType.UpGradeBtn:
 //                        upgradeUiDic.Add(towerType,rr.asset as GameObject);
                         break;
                 }
-                curLoad++;
+                _curLoad++;
             }
         }
 
@@ -127,13 +142,13 @@ public class AssestMgr : Singleton<AssestMgr>
             string resTypeStr  = resType.ToString();
             rr = Resources.LoadAsync<BuildRes>($"ScriptableObject/BuildResources/{resTypeStr}");
             yield return rr;
-            if (!BuildResDic.ContainsKey(resType) && rr.asset != null)
+            if (!_buildResDic.ContainsKey(resType) && rr.asset != null)
             {
-                BuildResDic.Add(resType,rr.asset as BuildRes);
+                _buildResDic.Add(resType,rr.asset as BuildRes);
             }
         }
         
-        loadComplete = true;
+        _loadComplete = true;
         
         GameManager.Instance.Init();
     }
@@ -152,34 +167,34 @@ public class AssestMgr : Singleton<AssestMgr>
     
     public LevelMsg LoadLevelMsg(int level)
     {
-        if (levelMsgDic.ContainsKey(level))
-            return levelMsgDic[level];
+        if (_levelMsgDic.ContainsKey(level))
+            return _levelMsgDic[level];
         
         LevelMsg ls = Resources.Load<LevelMsg>("ScriptableObject/Level/LevelMsg" + level.ToString());
 
         if(ls == null)
             throw new NullReferenceException($"本地未包含 LevelMsg{level}");
-        levelMsgDic.Add(level,ls);
+        _levelMsgDic.Add(level,ls);
         return ls;
     }
 
     public BuildRes LoadBuildRes(ResType type)
     {
-        if(BuildResDic[type] == null)
+        if(_buildResDic[type] == null)
             throw new NullReferenceException($"本地未包含 BuildRes{type}");
-        return BuildResDic[type];
+        return _buildResDic[type];
     }
     
     
     public GameObject LoadEnemy(EnemyType type)
     {
-        if (EnemyDic.ContainsKey(type))
-            return EnemyDic[type];
+        if (_enemyDic.ContainsKey(type))
+            return _enemyDic[type];
         GameObject go = Resources.Load<GameObject>($"Enemy/{type.ToString()}");
 
         if(go == null)
             throw new NullReferenceException($"本地未包含 {type}类型敌人");
-        EnemyDic.Add(type,go);
+        _enemyDic.Add(type,go);
         return go;
     }
     
@@ -202,24 +217,24 @@ public class AssestMgr : Singleton<AssestMgr>
 
     public Tower GetTower(TowerType type)
     {
-        if (towerDic.ContainsKey(type))
-            return towerDic[type];
+        if (_towerDic.ContainsKey(type))
+            return _towerDic[type];
         return null;
     }
     
     public GameObject GetTowerBaseObj(TowerType type)
     {
-        if (towerBaseObjDic.ContainsKey(type))
+        if (_towerBaseObjDic.ContainsKey(type))
         {
-            return towerBaseObjDic[type];
+            return _towerBaseObjDic[type];
         }
         return null;
     }
     
     public GameObject GetChooseUiObj(TowerType type)
     {
-        if (chooseUiDic.ContainsKey(type))
-            return chooseUiDic[type];
+        if (_chooseUiDic.ContainsKey(type))
+            return _chooseUiDic[type];
         return null;
     }
 

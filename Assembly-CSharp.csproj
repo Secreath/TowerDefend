@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Other\Curve.cs" />
      <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />
      <Compile Include="Assets\Scripts\Tower\ShotTower.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerPackage.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
      <Compile Include="Assets\Scripts\AssestMgr.cs" />
@@ -117,7 +118,7 @@
      <Compile Include="Assets\Scripts\ProjectBase\Base\AutoPush.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\BTTest.cs" />
-     <Compile Include="Assets\Scripts\Player\PlayerPackage.cs" />
+     <Compile Include="Assets\Scripts\Model\MonsterModel.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.8f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
