@@ -55,6 +55,35 @@ public class GameManager : Singleton<GameManager>
         
     }
 
+    public void InitPointLine()
+    {
+        PointsDic = new Dictionary<int, List<Point>>();
+        List<List<Transform>> roadList = Road.Instance.roadList;
+        for (int j = 0; j < roadList.Count; j++)
+        {
+            List<Point> pointList = new List<Point>();
+            List<Transform> posList = roadList[j];
+            
+            for (int i = 0; i < posList.Count; i++)
+            {
+                pointList.Add(GetPointByPos(posList[i].position));
+            }
+            PointsDic.Add(j,pointList);
+        }
+    }
+    
+    public void InitTypeDic()
+    {
+        towerCount = new Dictionary<TowerType, int>();
+        TypeDic = new Dictionary<TowerType, TileType>();
+        
+        for (int i = 0; i < choosedTowerList.Count; i++)
+        {
+            towerCount.Add(choosedTowerList[i],0);
+            TypeDic.Add(choosedTowerList[i],AssestMgr.Instance.GetTower(choosedTowerList[i]).tileType);
+        }
+    }
+    
     public void InitStartAndFinishPoints()
     {
         startPoints = new List<Point>();
@@ -68,33 +97,6 @@ public class GameManager : Singleton<GameManager>
                 startPoints.Add(start);
             if(!finishPoints.Contains(finish))
                 finishPoints.Add(finish);
-        }
-    }
-    public void InitPointLine()
-    {
-        PointsDic = new Dictionary<int, List<Point>>();
-        for (int j = 0; j < TDRoad.Instance.pathLines.Count; j++)
-        {
-            List<Point> pointList = new List<Point>();
-            List<Transform> posList = TDRoad.GetPathList(j);
-            
-            for (int i = 0; i < posList.Count; i++)
-            {
-                pointList.Add(GetPointByPos(posList[i].position));
-            }
-            PointsDic.Add(j,pointList);
-        }
-    }
-
-    public void InitTypeDic()
-    {
-        towerCount = new Dictionary<TowerType, int>();
-        TypeDic = new Dictionary<TowerType, TileType>();
-        
-        for (int i = 0; i < choosedTowerList.Count; i++)
-        {
-            towerCount.Add(choosedTowerList[i],0);
-            TypeDic.Add(choosedTowerList[i],AssestMgr.Instance.GetTower(choosedTowerList[i]).tileType);
         }
     }
     

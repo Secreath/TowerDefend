@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\Player\PlayerPackage.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\BaseProperty.cs" />
+     <Compile Include="Assets\Scripts\Tower\Castle.cs" />
      <Compile Include="Assets\Scripts\AssestMgr.cs" />
      <Compile Include="Assets\Scripts\Tower\UpGradeTower.cs" />
      <Compile Include="Assets\Scripts\Other\TimeCountDown.cs" />
@@ -86,11 +87,13 @@
      <Compile Include="Assets\Scripts\Enemy\Savage.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemyAnimStateMgr.cs" />
      <Compile Include="Assets\Scripts\Ui\UiManager.cs" />
+     <Compile Include="Assets\Scripts\Road.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Enemy\WaveSpawner.cs" />
      <Compile Include="Assets\Scripts\Player\FollowMgr.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\LoginPenal.cs" />
      <Compile Include="Assets\Scripts\Enemy\Witch.cs" />
+     <Compile Include="Assets\Scripts\Model\MonsterModel.cs" />
      <Compile Include="Assets\Scripts\ScriptableObject\LevelMsg.cs" />
      <Compile Include="Assets\Scripts\ProjectBase\UIMgr\BasePenal.cs" />
      <Compile Include="Assets\Scripts\Ui\UIEvent.cs" />
@@ -118,7 +121,8 @@
      <Compile Include="Assets\Scripts\ProjectBase\Base\AutoPush.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\BTTest.cs" />
-     <Compile Include="Assets\Scripts\Model\MonsterModel.cs" />
+     <Compile Include="Assets\Scripts\Helper\ShootFollowSoldier.cs" />
+     <Compile Include="Assets\Scripts\Helper\FightSolider.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.8f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

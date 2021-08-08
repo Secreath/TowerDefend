@@ -6,164 +6,154 @@ using Follower;
 using Player;
 using UnityEngine;
 
-
-public class Soilder : MonoBehaviour
+namespace solider
 {
-    public float atkDis;
-    public float speed;
-    public int atk;
-    
-    private Transform _house;
-    private GameObject _attackTarget;
-    private Vector2 _followPoint;
-    private Vector2 _lastPoint;
-    private BaseEnemyAnimStateMgr animStateMgr;
-    private BoxCollider2D box;
-    private int curAtk;
-    
-    private float curSpeed;
-    private float _disToPlayer;
-    private MoveState _moveType;
-    
-    private void Start()
-    {
-        animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
-        box = GetComponent<BoxCollider2D>();
-        
-        curAtk = atk;
-        curSpeed = speed;
-    }
-    
-    
-    private void Update()
-    {
-        if (animStateMgr.CurState() == EnemyState.Walk && _moveType != MoveState.CanAttack)
-        {
-            Move();
-        }
-        CheckAround();
-    }
 
-    void Move()
+    public class Soldier : MonoBehaviour
     {
-        if (_moveType != MoveState.FollowEnemy && (Vector2) transform.position != _followPoint)
-        {
-            float disSpeed = _disToPlayer * curSpeed;    
-            transform.position = Vector3.MoveTowards(transform.position, _followPoint, disSpeed * Time.deltaTime);
-        }
-        else if(_moveType == MoveState.FollowEnemy)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _attackTarget.transform.position, (curSpeed + 3) * Time.deltaTime);
-        }
-      
-    }
-    
-//    private void OnDrawGizmos()
-//    {
-//        Vector2 checkSize = new Vector2(atkDis, atkDis);
-//        Vector2 checkPoint = (Vector2)transform.position;
-//        Gizmos.DrawWireCube(checkPoint, checkSize);
-//    }
 
-    void FireFireBall()
-    {
-        if(_attackTarget == null || !_attackTarget.activeSelf)
-            return;
+        protected SoldierTower _house;
+        protected Transform _player;
+        protected BaseEnemyAnimStateMgr _animStateMgr;
+        protected BoxCollider2D _box;
+
+        protected Transform _otherSoldier;
+        protected Transform _enemy;
+
+        public EnemyProperty property;
+        protected EnemyProperty _curProperty;
+
+        protected MoveState _moveType;
+        protected MoveState _lastMoveType;
+        protected string eventId;
+
         
-        GameObject bullet = PoolMgr.GetInstance().PopObj("PeaBall");
-        bullet.tag = "PlayerBullet";
-        bullet.GetComponent<BaseBullet>().SetShotDir(curAtk, _attackTarget.transform.position, transform.position);
-         
-    }
-    
-    void CheckAround()
-    {
-        Vector2 checkSize = new Vector2(atkDis, atkDis);
-        Vector2 checkPoint = (Vector2)transform.position + box.offset;
-        Collider2D attackRange = Physics2D.OverlapBox(checkPoint, checkSize, 0, LayerMask.GetMask("Enemy"));
-        
-        _disToPlayer = Vector2.Distance(transform.position, PlayerStateMgr.Instance.transform.position);
-        
-        if (attackRange != null)
+        [Serializable]
+        public struct EnemyProperty
         {
-            if(_attackTarget == null || _attackTarget.activeSelf)
-                _attackTarget = attackRange.gameObject;
+            public float speed;
+            public int atk;
+            public int hp;
             
-            TryToChangeType(MoveState.CanAttack);
+            public float atkDis;
+            public float followEnemyDis;
+            public float disWithOther;
+            public float disWithEnemy;
         }
-        else
+
+        protected virtual void Start()
         {
-            if (_attackTarget != null)
+            _player = PlayerInput.Instance.transform;
+            _animStateMgr = GetComponent<BaseEnemyAnimStateMgr>();
+            _box = GetComponent<BoxCollider2D>();
+
+            _curProperty = property;
+            
+        }
+
+        public virtual void SetHouse(SoldierTower house)
+        {
+            _house = house;
+            _curProperty.atk = house.soliderAtk;
+            eventId = house.name;
+            EventCenter.GetInstance().AddEventListener($"{eventId}UpGrade", TowerUpgrade);
+            EventCenter.GetInstance().AddEventListener($"{eventId}Destory", TowerDestory);
+        }
+
+        protected virtual void Update()
+        {
+            CheckAround();
+            ChangeMoveState();
+            CheckMoveState();
+        }
+
+        protected virtual void CheckMoveState()
+        {
+            switch (_moveType)
             {
-                TryToChangeType(MoveState.FollowEnemy);
-                if (Vector2.Distance(transform.position, _attackTarget.transform.position) > atkDis)
-                {
-                    _attackTarget = null;
-                    animStateMgr.TryChangeState(EnemyState.Idle);
-                }
+                case MoveState.FollowEnemy:
+                    FollowEnemy();
+                    break;
+                case MoveState.FarOther:
+                    FarOther();
+                    break;
+                case MoveState.Stop:
+                    break;
             }
         }
-        
-        if (_disToPlayer < 1)
-        {
-            TryToChangeType(MoveState.InRange);
-        }
-        else
-        {
-            _followPoint = PlayerStateMgr.Instance.FollowPoint;
-            TryToChangeType(MoveState.OutRange);
-        }
-    }
 
-    void TryToChangeType(MoveState moveState)
-    {
-        if(moveState == _moveType)
-            return;
-        switch (moveState)
+        //ChangeMoveState
+        protected virtual void ChangeMoveState()
         {
-            case MoveState.CanAttack:
-                if (_moveType == MoveState.InRange || _moveType == MoveState.FollowEnemy)
-                {
-                    _moveType = MoveState.CanAttack;
-                    animStateMgr.TryChangeState(EnemyState.Attack);
-                }
-                break;
-            case MoveState.InRange:
-                if (_moveType == MoveState.OutRange)
-                {
-                    _moveType = MoveState.InRange;
-                    animStateMgr.TryChangeState(EnemyState.Idle);
-                }
-                break;
-            case MoveState.OutRange:
-                _moveType = MoveState.OutRange;
-                animStateMgr.ChangeState(EnemyState.Walk);
-                break;
-            case MoveState.FollowEnemy:
-                if (_moveType == MoveState.CanAttack && _attackTarget!= null)
-                    if (Vector2.Distance(transform.position, _attackTarget.transform.position) > atkDis - 2)
+            //敌人不为空 且距离玩家距离不超过最大攻击距离
+            if (_enemy != null && !CompareTool.DisLongerThan(transform.position, _player.position,_curProperty.followEnemyDis))
+            {
+                
+                if (CompareTool.DisLongerThan(transform,_enemy,_curProperty.atkDis))
                 {
                     _moveType = MoveState.FollowEnemy;
-                    animStateMgr.TryChangeState(EnemyState.Walk);
                 }
-                break;
+                else
+                {
+                    _moveType = MoveState.Stop;
+                }
+            }
+            else if (_otherSoldier != null)
+            {
+                _moveType = MoveState.FarOther;
+            }
+            else
+            {
+                _moveType = MoveState.Stop;
+            }
         }
-        
-    }
 
-    private void Dead()
-    {
-        if (_house != null)
+        protected virtual void CheckAround()
         {
-            transform.parent = _house;
-            transform.localPosition = Vector3.zero;
+            Vector2 checkPoint = (Vector2) transform.position + _box.offset;
+            _box.enabled = false;
+            Collider2D other = Physics2D.OverlapCircle(checkPoint, _curProperty.disWithOther, LayerMask.GetMask("Soldier"));
+            Collider2D enemy = Physics2D.OverlapCircle(checkPoint, _curProperty.disWithEnemy, LayerMask.GetMask("Enemy"));
+            _box.enabled = true;
+
+            if (other == null)
+                _otherSoldier = null;
+            else
+                _otherSoldier = other.transform;
+
+            if (enemy == null)
+                _enemy = null;
+            else
+                _enemy = enemy.transform;
+
         }
-        gameObject.SetActive(false);
 
-    }
+        protected virtual void FollowEnemy()
+        {
+            transform.position = Vector2.MoveTowards(transform.position,
+                _enemy.position, _curProperty.speed * Time.deltaTime);
+        }
 
-    public void SetHouse(Transform house)
-    {
-        _house = house;
+        protected virtual void FarOther()
+        {
+            transform.position = Vector2.MoveTowards(transform.position,
+                _otherSoldier.transform.position, -_curProperty.speed / 3 * Time.deltaTime);
+        }
+
+        protected virtual void TowerUpgrade()
+        {
+            Debug.Log("SoliderUpgrade");
+        }
+
+        protected virtual void TowerDestory()
+        {
+            Debug.Log("SoliderDestory");
+        }
+
+        protected virtual void OnDestroy()
+        {
+            EventCenter.GetInstance().RemoveEventListener($"{eventId}UpGrade", TowerUpgrade);
+            EventCenter.GetInstance().RemoveEventListener($"{eventId}Destory", TowerDestory);
+        }
     }
 }

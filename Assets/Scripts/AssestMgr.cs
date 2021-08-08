@@ -94,7 +94,14 @@ public class AssestMgr : Singleton<AssestMgr>
             throw new NullReferenceException($"本地未包含 Json Monster");
         _monsterModel.InitMonster(text.text);
     }
-    
+
+    public static Monster GetMonsterFormDic(int id)
+    {
+        if (!Instance._monsterModel.monsterDic.ContainsKey(id))
+            return null;
+        return Instance._monsterModel.monsterDic[id];
+
+    }
     private IEnumerator LoadAllTowerObj(List<TowerType> choosedTowerList)
     {
         _loadComplete = false;

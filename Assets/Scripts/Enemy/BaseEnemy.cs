@@ -7,9 +7,15 @@ using UnityEngine;
 
 public class BaseEnemy : BaseProperty,ITakeDamage
 {
-    public Point CurPoint => GameManager.GetPointByPos(transform.position);
+    public int Id;
+
+    public int HitCastle;
+    protected int curAtk;
+    protected int curDef;
+    protected int curSpd;
     
-    public EnemyType type;
+    private Monster monster;
+    public Point CurPoint => GameManager.GetPointByPos(transform.position);
     public int RoadId;
     public float attackRadius;
     
@@ -35,7 +41,7 @@ public class BaseEnemy : BaseProperty,ITakeDamage
 //        EventCenter.GetInstance().AddEventListener("GameStart",Init);
         Init();
     }
-
+    
     public void Init()
     {
         pathQueue = new Queue<Point>(GameManager.GetPointList(RoadId));
@@ -52,6 +58,22 @@ public class BaseEnemy : BaseProperty,ITakeDamage
         start = true;
     }
 
+    public void SetProperty()
+    {
+        monster = AssestMgr.GetMonsterFormDic(Id);
+        canMove = true;
+        
+        curAtk = monster.Atk;
+        curDef = monster.Def;
+        curSpd = monster.Spd;
+        
+        maxHp = monster.Hp;
+        curHp = monster.Hp;
+        maxSpeed = monster.moveSpeed;
+        curSpeed = monster.moveSpeed;
+
+        HitCastle = monster.HitPower;
+    }
 
     public void FaceToTarget()
     {
@@ -86,9 +108,10 @@ public class BaseEnemy : BaseProperty,ITakeDamage
     
     public virtual void TakeDamage(int damage)
     {
-        _curHp -= damage;
+        damage -= curDef;
+        curHp -= damage <0? 0:damage;
         HpBarUpDate();
-        if (_curHp <= 0)
+        if (curHp <= 0)
             EnemyDead();
     }
     
@@ -154,7 +177,7 @@ public class BaseEnemy : BaseProperty,ITakeDamage
 
     public void ChangeMoveState()
     {
-        if (_curHp <= 0)
+        if (curHp <= 0)
             enemyState = EnemyState.Dead;
         else if(attackTarget!=null && CompareTool.DisLongerThan(transform,attackTarget,attackRadius))
             enemyState = EnemyState.WalkToEnemy;
@@ -218,8 +241,12 @@ public class BaseEnemy : BaseProperty,ITakeDamage
 
     private void OnAttackEnd()
     {
-        if(attackTarget!=null)
-            attackTarget.GetComponent<ITakeDamage>().TakeDamage(atk);
+        if(attackTarget == null )
+            return;
+        if(attackTarget.CompareTag("Castle"))
+            attackTarget.GetComponent<ITakeDamage>().TakeDamage(monster.HitPower);
+        else
+            attackTarget.GetComponent<ITakeDamage>().TakeDamage(curAtk);
     }
     
 }

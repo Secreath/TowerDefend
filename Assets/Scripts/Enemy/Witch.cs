@@ -44,7 +44,7 @@ public class Witch : BaseEnemy
             return;
         GameObject bullet = PoolMgr.GetInstance().PopObj("FireBall");
         bullet.tag = "EnemyBullet";
-        bullet.GetComponent<BaseBullet>().SetShotDir(atk, _attackTarget.transform.position, transform.position);
+        bullet.GetComponent<BaseBullet>().SetShotDir(curAtk, _attackTarget.transform.position, transform.position);
     }
     
     void CheckAround()

@@ -98,11 +98,13 @@ namespace SaveRes
 
             levelPathData.level = 1;
             List<PathData> pathData = new List<PathData>();
-            foreach (PathLine pathLine in TDRoad.Instance.pathLines)
+
+            List<List<Transform>> roadList = Road.Instance.roadList;
+            for(int i =0;i< roadList.Count ;i++)
             {
                 PathData data = new PathData();
-                data.id = pathLine.pathID;
-                data.pathList = TransPath(pathLine.path);
+                data.id = i;
+                data.pathList = TransPath(roadList[i]);
                 pathData.Add(data);
             }
 

@@ -10,15 +10,25 @@ public class BaseProperty : MonoBehaviour
     public Vector3 uiOffSet;
     protected CharacterUiMgr uimgr;
     
-    [SerializeField]protected int atk;
-    [SerializeField]protected int maxHp;
-    [SerializeField]protected float moveSpeed;
-
     protected bool canMove;
-    protected int _curHp;
+    protected int maxHp;
+    private int _curHp;
 
+    protected int curHp
+    {
+        get { return _curHp; }
+
+        set
+        {
+            if (value < 0)
+                value = 0;
+            _curSpeed = value;
+        }
+    }
+
+
+    protected float maxSpeed;
     private float _curSpeed;
-    
     protected float curSpeed
     {
         get
@@ -42,7 +52,6 @@ public class BaseProperty : MonoBehaviour
         canMove = true;
         uimgr = UiManager.EnemyUi.PopCharUiBar();
         _curHp = maxHp;
-        curSpeed = moveSpeed;
     }
     
 

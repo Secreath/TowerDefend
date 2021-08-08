@@ -52,7 +52,9 @@
           <e p="GameManager.cs" t="Include" />
           <e p="HeGizmosCircle.cs" t="Include" />
           <e p="Helper" t="Include">
+            <e p="FightSolider.cs" t="Include" />
             <e p="FollowSoldier.cs" t="Include" />
+            <e p="ShootFollowSoldier.cs" t="Include" />
             <e p="Soilder.cs" t="Include" />
           </e>
           <e p="Item" t="Include">
@@ -110,6 +112,7 @@
               <e p="UIMgr.cs" t="Include" />
             </e>
           </e>
+          <e p="Road.cs" t="Include" />
           <e p="ScriptableObject" t="Include">
             <e p="BuildRes.cs" t="Include" />
             <e p="LevelMsg.cs" t="Include" />
@@ -121,6 +124,7 @@
           <e p="Tower" t="Include">
             <e p="BaseConstruct.cs" t="Include" />
             <e p="BaseTower.cs" t="Include" />
+            <e p="Castle.cs" t="Include" />
             <e p="ResourcesPoint.cs" t="Include" />
             <e p="ShotTower.cs" t="Include" />
             <e p="SoldierTower.cs" t="Include" />

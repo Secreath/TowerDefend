@@ -23,6 +23,7 @@ public class MonsterModel
             Debug.LogError("AllMonsterNull");
         foreach (Monster monster in allMonster.Monsters)
         {
+            monster.HitPower = 1;
             monsterList.Add(monster);
             monsterDic.Add(monster.Id,monster);
             Debug.Log(monster.GroundAir);
@@ -48,4 +49,6 @@ public class Monster
     public int GroundAir;
     public int Aoe;
     public int SkillId;
+    public int HitPower;
+    public float moveSpeed;
 }
